@@ -5,6 +5,7 @@ from sqlalchemy import sql
 import time
 import shutil
 
+
 # 数据库的路径
 db_path = 'db.sqlite'
 # 获取 app 的实例
@@ -32,7 +33,7 @@ class User(db.Model):
     note = db.Column(db.String())
     role = db.Column(db.Integer, default=2)
     # 这是引用别的表的数据的属性，表明了它关联的东西
-    tweets = db.relationship('Tweet', backref='user')
+    blogs = db.relationship('Blog', backref='user')
 
     def __init__(self, form):
         super(User, self).__init__()
@@ -74,16 +75,44 @@ class User(db.Model):
             return False
 
 
-class Tweet(db.Model):
-    __tablename__ = 'tweets'
+class Blog(db.Model):
+    __tablename__ = 'blogs'
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String())
     content = db.Column(db.String())
     created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
     # 这是一个外键
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, form):
+        self.content = form.get('Blogscontent', '')
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        return u'<{}: {}>'.format(class_name, self.id)
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class Comment(db.Model):
+    __tablename__ = 'comments'
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String())
+    content = db.Column(db.String())
+    created_time = db.Column(db.String())
+
+    blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+
+    def __init__(self, form):
+        self.title = form.get('title', '')
         self.content = form.get('content', '')
+        self.created_time = ''
 
     def __repr__(self):
         class_name = self.__class__.__name__

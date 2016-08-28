@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>blog detail</title>
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/blog-home.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+</head>
+<body>
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">Home</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="#">About</a>
+                </li>
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+
+<div class="container">
+
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="page-header">
+                我的博客
+                <small>详情</small>
+            </h1>
+
+            <!-- First Blog Post -->
+            <h2>
+                <p>Blog Post Title</p>
+            </h2>
+            <p class="lead">
+                by <a href="index.php">Start Bootstrap</a>
+            </p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+            <hr>
+            <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+            <hr>
+            <p>{{ blog }}啊懂法发送扥阿萨扥</p>
+
+            <hr>
+
+            <!-- Pager -->
+            <ul class="pager">
+                <li class="previous">
+                    <a href="#">&larr; Older</a>
+                </li>
+                <li class="next">
+                    <a href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+
+            <hr>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+            <h1 class="page-header">
+                评论区
+                <small>详情</small>
+            </h1>
+            <!--<form class="form-horizontal">-->
+            <!--<textarea class="form-control" rows="3"></textarea>-->
+            <!--<button type="submit" class="btn btn-default">提交</button>-->
+            <!--</form>-->
+            <form class="form-horizontal" action="/blog/comments" method="POST">
+                <div class="form-group">
+                    <label for="id-input-title" class="col-sm-2 control-label">标题</label>
+                    <div class="col-sm-10">
+                        <input name="title" class="form-control" id="id-input-title" placeholder="标题">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="id-input-content" class="col-sm-2 control-label">内容</label>
+                    <div class="col-sm-10">
+                        <textarea name="content" class="form-control" rows="3" id="id-input-content"
+                                  placeholder="内容"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="button" id="id-button-submit" class="btn btn-default">提交</button>
+                    </div>
+                </div>
+            </form>
+            <hr>
+        </div>
+    </div>
+</div>
+<!--&lt;!&ndash; Blog Search Well &ndash;&gt;-->
+<!--<div class="well">-->
+<!--<h4>Blog Search</h4>-->
+<!--<div class="input-group">-->
+<!--<input type="text" class="form-control">-->
+<!--<span class="input-group-btn">-->
+<!--<button class="btn btn-default" type="button">-->
+<!--<span class="glyphicon glyphicon-search"></span>-->
+<!--</button>-->
+<!--</span>-->
+<!--</div>-->
+<!--&lt;!&ndash; /.input-group &ndash;&gt;-->
+<!--</div>-->
+
+
+<!--<script>-->
+    <!--$(document).ready(function () {-->
+        <!--console.log('ready');-->
+        <!--var button = $('#id-button-submit');-->
+        <!--var title_input = $('#id-input-title');-->
+        <!--var content_input = $('#id-input-content');-->
+        <!--button.on('click', function () {-->
+            <!--var title = title_input.val();-->
+            <!--var content = content_input.val();-->
+            <!--var data = {-->
+                <!--title: title,-->
+                <!--content: content-->
+            <!--};-->
+            <!--var url = "/blog/comments/add";-->
+            <!--console.log('准备发送request');-->
+            <!--var request = {-->
+                <!--url: url,-->
+                <!--contentType: 'application/json',-->
+                <!--type: 'post',-->
+                <!--data: data,-->
+                <!--success: function (r) {-->
+                    <!--console.log('服务器返回了:', r);-->
+                <!--}-->
+            <!--};-->
+            <!--$.ajax(request);-->
+        <!--})-->
+    <!--})-->
+
+<!--</script>-->
+<script>
+    $(document).ready(function () {
+        console.log('ready');
+        var button = $('#id-button-submit');
+        var title_input = $('#id-input-title');
+        var content_input = $('#id-input-content');
+        button.on('click', function () {
+            var title = title_input.val();
+            var content = content_input.val();
+            var data = {
+                title:title,
+                content:content
+            };
+            var json_data = JSON.stringify(data)
+            var request = {
+                url: "/blog/comments/add",
+                contentType: 'application/json',
+                type: 'post',
+                data: json_data,
+                success: function (data) {
+                console.log('服务器返回了:',data);
+                }
+            };
+        $.ajax(request);
+        })
+    })
+</script>
+
+</body>
+</html>
