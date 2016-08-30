@@ -154,6 +154,42 @@
                         </li>
                     </ul>
                 </li>
+                {% for comment in comments %}
+                    <li>
+                        <div class="uk-comment">
+                            <div class="uk-comment-header" style="margin-bottom:0">
+                                <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
+                                        class="uk-comment-avatar uk-border-circle x-avatar"
+                                        src="http://tva3.sinaimg.cn/crop.0.0.170.170.50/006wfzUWjw8f5chyr9i1uj304q04qt8h.jpg"
+                                        width="50" height="50" alt=""></a>
+                                <h4 class="uk-comment-title"><a target="_blank"
+                                                                href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">{{ comment.title }}</a>
+                                </h4>
+                                <div class="uk-comment-meta"><a target="_blank"
+                                                                href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">待补充用户名</a>
+                                    created at {{ comment.created_time }}
+                                </div>
+                            </div>
+                            <div class="uk-comment-body x-auto-content">
+                                {{ comment.content }}
+                            </div>
+                        </div>
+                        <ul>
+                            <li>
+                                <div class="x-comment-info">
+                                    <hr>
+                                    <a target="_blank" class="uk-button uk-button-small"
+                                       href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000"><i
+                                            class="uk-icon-list-ul"></i> View Full Discuss</a>
+                                    &nbsp;
+                                    <a target="_blank" class="uk-button uk-button-small"
+                                       href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000#reply"><i
+                                            class="uk-icon-reply"></i> Reply This Topic</a>
+                                </div>
+                            </li>
+                        </ul>
+                    </li>
+                {% endfor %}
             </ul>
             <!--<form class="form-horizontal">-->
             <!--<textarea class="form-control" rows="3"></textarea>-->
@@ -236,11 +272,22 @@
         button.on('click', function () {
             var title = title_input.val();
             var content = content_input.val();
+            preparsedContent = content.split('\n');
+            var completeContent = '';
+            for(var i=0; i<preparsedContent.length; i++){
+                var temp = '<p>' + preparsedContent[i] + '</p>';
+                completeContent = completeContent + temp
+            }
+            console.log('fuck you ')
+            console.log('fuck you!!!!!!', preparsedContent.length);
+            console.log('preparsedContent :',preparsedContent);
+            console.log('completeContent :',completeContent);
             var data = {
                 title: title,
-                content: content
+                content: completeContent
             };
             var json_data = JSON.stringify(data);
+            console.log('debug json_data :', json_data);
             var request = {
                 url: "/blog/comments/add",
                 contentType: 'application/json',
@@ -290,7 +337,7 @@
                     </div>
                 </div>
                 <div class="uk-comment-body x-auto-content">
-                    <p>${content}</p>
+                    ${content}
                 </div>
             </div>
             <ul>

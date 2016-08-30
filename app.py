@@ -11,8 +11,22 @@ from models import Comment
 import time
 
 
+def log(*args):
+    print(*args)
+
 app = Flask(__name__)
 
+
+def parse_comment(comment):
+    pre_parse =['<p>{}</p>'.format(i) for i in comment.split('\n')]
+    log('test pre_parse :', pre_parse)
+    result = b''
+    for i in pre_parse:
+        result += i
+    return result
+
+env = app.jinja_env
+env.filters['parse_comment'] = parse_comment
 
 @app.route('/', methods=['GET'])
 def blogs_view():
@@ -25,21 +39,25 @@ def blogs_view():
 @app.route('/blog/details', methods=['GET'])
 def blog_detail_view():
     # blog = Blog.query.filter_by(id=blog_id).first()
-    return render_template('blog_detail.html')
+    comments = Comment.query.filter_by(blog_id=1).all()
+    log('debug', comments)
+    # log('test created_time:', comments[-1].created_time, comments[-1].id)
+    return render_template('blog_detail.html', comments=comments)
 
 
 @app.route('/blog/comments/add', methods=['POST'])
 def blog_comment_add():
     form = request.get_json()
-    print('!!!!!!!!!!!!test form :',form)
+    log('!!!!!!!!!!!!test form :',form)
     comment = Comment(form)
+    comment.created_time = time.time()
     comment.save()
-    print('!!!!!!!!!!!!test content :',comment)
+    log('!!!!!!!!!!!!test content :',comment)
     response = {
         'success': True,
         'title': comment.title,
         'content': comment.content,
-        'created_time': time.time()
+        'created_time': comment.created_time
     }
     return jsonify(response)
 
