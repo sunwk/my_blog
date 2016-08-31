@@ -358,6 +358,20 @@
         `;
         return t;
     };
+
+    $(document).ready(function () {
+        var divs = $('.x-auto-content');
+        console.log('div', divs);
+        for (var i=0; i<divs.length; i++){
+            //var content = divs[i].html();
+            currentDiv = divs[i];
+            console.log('currentDiv:', currentDiv);
+            var content = $(currentDiv).text();
+            console.log('currentDiv content:', content);
+            $(currentDiv).html(content);
+        }
+    })
+
 </script>
 
 </body>

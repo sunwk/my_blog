@@ -17,16 +17,17 @@ def log(*args):
 app = Flask(__name__)
 
 
-def parse_comment(comment):
-    pre_parse =['<p>{}</p>'.format(i) for i in comment.split('\n')]
-    log('test pre_parse :', pre_parse)
+def parse_comment(content):
+    c =['<p>{}</p>'.format(i) for i in content.split('\n')]
+    log('test c :', c)
     result = b''
-    for i in pre_parse:
+    for i in c:
         result += i
     return result
 
 env = app.jinja_env
 env.filters['parse_comment'] = parse_comment
+
 
 @app.route('/', methods=['GET'])
 def blogs_view():
