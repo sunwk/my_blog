@@ -37,6 +37,11 @@ def blogs_view():
     return render_template('index.html', blog=blog[:200])
 
 
+@app.route('/about', methods=['GET'])
+def profile_view():
+    return render_template('aboutme.html')
+
+
 @app.route('/blog/details', methods=['GET'])
 def blog_detail_view():
     # blog = Blog.query.filter_by(id=blog_id).first()
