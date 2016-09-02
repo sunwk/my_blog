@@ -26,7 +26,7 @@ class User(db.Model):
     # 这些都是内置的 __tablename__ 是表名
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String())
+    username = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
     created_time = db.Column(db.DateTime(timezone=True),default=sql.func.now())
     sex = db.Column(db.String())

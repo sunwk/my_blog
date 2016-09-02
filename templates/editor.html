@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>My Blog</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='markdown/css/editormd.min.css') }}"/>
+
+    <link rel="stylesheet" type="text/css" href="/static/css/blogcss2.css">
+
+    <!-- Bootstrap Core CSS -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="../static/css/blog-home.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <script src="{{ url_for('static', filename='markdown/examples/js/jquery.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='markdown/editormd.min.js') }}"></script>
+    <script type="text/javascript">
+        $(function () {
+            var editor = editormd("editormd", {
+                height: 640,
+                path: "{{ url_for('static', filename='markdown/lib/')}}" // Autoload modules mode, codemirror, marked... dependents libs path
+            });
+            /*
+             // or
+             var editor = editormd({
+             id   : "editormd",
+             path : "../lib/"
+             });
+             */
+        });
+    </script>
+
+
+</head>
+
+<body style="background-color:#EEE">
+
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                <li>
+                    <a href="#">Services</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+            <form action="/register" class="navbar-form navbar-right">
+                <div class="form-group">
+                    <input type="text" placeholder="Username" name="username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+{#<div data-id='{{ user_id }}' style="cursor:pointer" class="btn btn-primary btn-large btn-block btn-like-add col-sm-10">#}
+{#    提交文章#}
+{#    <span id="id-span-commit" aria-hidden="True"></span>#}
+{#</div>#}
+<div data-id='{{ user_id }}'>
+    <button id="id-span-commit" class="btn btn-primary btn-block">提交文章</button>
+</div>
+<div id="editormd">
+        <textarea style="display:none;">### Hello Editor.md !</textarea>
+</div>
+<script>
+    $(document).ready(function () {
+        console.log('ready');
+        //var contentFiled = $('.CodeMirror');
+        //console.log('内容范围：',contentFiled);
+        //$('.CodeMirror').text() 不知道为什么没用;
+        //console.log(content);
+        commitArticle()
+    });
+
+    var commitArticle = function () {
+        var button = $('#id-span-commit');
+        button.on('click', function () {
+            var content = $('.CodeMirror').text();
+            console.log('要提交的内容:', content)
+        })
+    }
+
+</script>
+</body>
+</html>

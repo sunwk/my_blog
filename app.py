@@ -4,18 +4,35 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from flask import jsonify
+from flask import session
 
+from models import User
 from models import Blog
 from models import Comment
-
 
 import time
 
 
-def log(*args):
-    print(*args)
-
 app = Flask(__name__)
+
+app.secret_key = 'lxx'
+
+
+def log(*args):
+    t = time.time()
+    tt = time.strftime(r'%Y/%m/%d %H:%M:%S', time.localtime(t))
+    print(tt, *args)
+    with open('log.txt', 'a') as f:
+        f.write('{} : {}\n'.format(tt, *args))
+        f.close()
+
+
+def current_user():
+    # cid = request.cookies.get('cookie_id', '')
+    # user = cookie_dict.get(cid, None)
+    user_id = session['user_id']
+    user = User.query.filter_by(id=user_id).first()
+    return user
 
 
 def parse_comment(content):
@@ -68,6 +85,41 @@ def blog_comment_add():
     }
     return jsonify(response)
 
+
+@app.route('/register')
+def register():
+    form = request.form
+    log('debug form:', form)
+    u = User(form)
+    user = User.query.filter_by(username=u.username).first()
+    if user is None:
+        u.save()
+        return redirect(url_for('editor_view', user_id=u.id))
+    else:
+        if user.validate(u):
+            log("用户登录成功", user, user.username, user.password)
+            session['user_id'] = user.id
+            r = redirect(url_for('editor_view', user_id=user.id))
+            return r
+        else:
+            log('账号名或密码错误')
+            return redirect(url_for('blogs_view'))
+
+
+
+
+
+            # # 用 make_response 生成响应 并且设置 cookie
+            # r = make_response(redirect(url_for('editor_view', user_id=u.id)))
+            # # cookie_id = str(uuid.uuid4())
+            # # cookie_dict[cookie_id] = user
+            # session['user_id'] = user.id
+            # r.set_cookie('cookie_id', cookie_id)
+
+
+@app.route('/editor/<user_id>')
+def editor_view(user_id):
+    return render_template('editor.html', user_id=user_id)
 
     #
     # @app.route('/blog/comments', methods=['POST'])
