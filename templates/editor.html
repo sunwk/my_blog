@@ -97,7 +97,7 @@
 {#    <span id="id-span-commit" aria-hidden="True"></span>#}
 {#</div>#}
 <div data-id='{{ user_id }}'>
-    <button id="id-span-commit" class="btn btn-primary btn-block">提交文章</button>
+    <button id="id-button-commit" class="btn btn-primary btn-block">提交文章</button>
 </div>
 <div id="editormd">
         <textarea style="display:none;">### Hello Editor.md !</textarea>
@@ -113,7 +113,7 @@
     });
 
     var commitArticle = function () {
-        var button = $('#id-span-commit');
+        var button = $('#id-button-commit');
         button.on('click', function () {
             var content = $('.CodeMirror').text();
             console.log('要提交的内容:', content)
