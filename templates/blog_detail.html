@@ -293,10 +293,9 @@
                 var temp = '<p>' + preparsedContent[i] + '</p>';
                 completeContent = completeContent + temp
             }
-            console.log('fuck you ')
-            console.log('fuck you!!!!!!', preparsedContent.length);
-            console.log('preparsedContent :',preparsedContent);
-            console.log('completeContent :',completeContent);
+            console.log('评论内容段落数量', preparsedContent.length);
+            console.log('评论内容 :',preparsedContent);
+            console.log('拼接完成的评论html :',completeContent);
             var data = {
                 title: title,
                 content: completeContent

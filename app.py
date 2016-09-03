@@ -72,11 +72,9 @@ def blog_detail_view():
 @app.route('/blog/comments/add', methods=['POST'])
 def blog_comment_add():
     form = request.get_json()
-    log('!!!!!!!!!!!!test form :',form)
     comment = Comment(form)
     comment.created_time = time.time()
     comment.save()
-    log('!!!!!!!!!!!!test content :',comment)
     response = {
         'success': True,
         'title': comment.title,
@@ -120,6 +118,23 @@ def register():
 @app.route('/editor/<user_id>')
 def editor_view(user_id):
     return render_template('editor.html', user_id=user_id)
+
+
+@app.route('/blog/add', methods=['POST'])
+def blog_add():
+    form = request.get_json()
+    blog = Blog(form)
+    blog.created_time = time.time()
+    blog.save()
+    response = {
+        'id': blog.id,
+        'success': True,
+        'title': blog.title,
+        'content': blog.content,
+        'created_time': blog.created_time,
+    }
+    return jsonify(response)
+
 
     #
     # @app.route('/blog/comments', methods=['POST'])

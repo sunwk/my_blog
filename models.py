@@ -28,7 +28,7 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True)
     password = db.Column(db.String())
-    created_time = db.Column(db.DateTime(timezone=True),default=sql.func.now())
+    created_time = db.Column(db.String())
     sex = db.Column(db.String())
     note = db.Column(db.String())
     role = db.Column(db.Integer, default=2)
@@ -80,12 +80,14 @@ class Blog(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String())
     content = db.Column(db.String())
-    created_time = db.Column(db.DateTime(timezone=True), default=sql.func.now())
+    created_time = db.Column(db.String())
     # 这是一个外键
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, form):
-        self.content = form.get('Blogscontent', '')
+        self.content = form.get('content', '')
+        self.title = form.get('title', '')
+        self.user_id = form.get('user_id', '')
 
     def __repr__(self):
         class_name = self.__class__.__name__

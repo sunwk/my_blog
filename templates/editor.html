@@ -105,10 +105,10 @@
 
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-          <h4 class="modal-title" id="myModalLabel">Please add a title and submit articles</h4>
+          <h4 class="modal-title" id="myModalLabel">Please add a title and submit blog</h4>
         </div>
         <div class="modal-body">
-          <input type="text" class="form-control" placeholder="Type title here">
+          <input id="id-input-title" type="text" class="form-control" placeholder="Type title here">
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -119,9 +119,9 @@
     </div><!-- /.modal-dialog -->
   </div><!-- /.modal -->
 
-  <div data-id='{{ user_id }}' class="bs-example"> {# style="padding-bottom: 24px;"> #}
+  <div id="id-div-dataset" data-id='{{ user_id }}' class="bs-example"> {# style="padding-bottom: 24px;"> #}
     <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#myModal">
-      Click to add a title and submit articles
+      Click to add a title and submit blog
     </button>
   </div>
 {#<div data-id='{{ user_id }}'>#}
@@ -133,18 +133,33 @@
 <script>
     $(document).ready(function () {
         console.log('ready');
-        //var contentFiled = $('.CodeMirror');
-        //console.log('内容范围：',contentFiled);
-        //$('.CodeMirror').text() 不知道为什么没用;
-        //console.log(content);
-        commitArticle()
+        commitBlog()
     });
 
-    var commitArticle = function () {
+    var commitBlog = function () {
         var button = $('#id-button-commit');
         button.on('click', function () {
             var content = $('.CodeMirror').text();
-            console.log('要提交的内容:', content)
+            console.log('要提交的内容:', content);
+            var title = $('#id-input-title').val();
+            console.log('要提交的标题:', title);
+            var user_id = $('#id-div-dataset').data('id');
+            var blog = {
+                user_id: user_id,
+                title: title,
+                content: content
+            };
+            var parsed_blog = JSON.stringify(blog);
+            var request = {
+                url: "/blog/add",
+                contentType: 'application/json',
+                type: 'post',
+                data: parsed_blog,
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                }
+            };
+            $.ajax(request)
         })
     }
 
