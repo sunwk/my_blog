@@ -157,6 +157,9 @@
                 data: parsed_blog,
                 success: function (r) {
                     console.log('服务器返回了:', r);
+                    if(r.success){
+                        window.location.pathname = '/blog/details/' + r.id
+                    }
                 }
             };
             $.ajax(request)

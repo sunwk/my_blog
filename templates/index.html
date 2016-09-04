@@ -18,6 +18,8 @@
     <!-- Custom CSS -->
     <link href="../static/css/blog-home.css" rel="stylesheet">
 
+    <script src="/static/js/jquery.js"></script>
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -27,9 +29,28 @@
 
 
 </head>
-
+<script>
+    $(document).ready(function () {
+        //var currentUserId = $('#id-div-current_user').data('id');
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success){
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
+    })
+</script>
 <body style="background-color:#EEE">
-
+{#    <div id="id-div-current_user" data-current_user_id="{{ current_user.id }}">#}
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -50,13 +71,13 @@
                         <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
+                        <a href="/editor/{{ user.id }}">Write blog</a>
                     </li>
                     <li>
                         <a href="#">Contact</a>
                     </li>
                 </ul>
-                <form action="/register" class="navbar-form navbar-right">
+                <form action="/register" class="navbar-form navbar-right" method="post">
                     <div class="form-group">
                       <input type="text" placeholder="Username" name="username" class="form-control">
                     </div>
@@ -64,6 +85,7 @@
                       <input type="password" placeholder="Password" name="password" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success">Sign in</button>
+                    <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
                  </form>
            </div>
             <!-- /.navbar-collapse -->
@@ -86,52 +108,53 @@
                     </h1>
 
                     <!-- First Blog Post -->
+                    {% for blog in blogs %}
                     <h2>
-                        <a href="/blog/details">Blog Post Title</a>
+                        <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
                     </h2>
                     <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
+                        by <a href="/{{ user.id }}">{{ user.username }}</a>
                     </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+                    <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
                     <hr>
                     <img class="img-responsive" src="http://placehold.it/900x300" alt="">
                     <hr>
-                    <p>{{ blog }}</p>
+                    <p>{{ blog.content }}</p>
                     <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
-
-                    <!-- Second Blog Post -->
-                    <h2>
-                        <a href="#">Blog Post Title</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                    <hr>
-
-                    <!-- Third Blog Post -->
-                    <h2>
-                        <a href="#">Blog Post Title</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                    <hr>
+                    {% endfor %}
+{#                    <!-- Second Blog Post -->#}
+{#                    <h2>#}
+{#                        <a href="#">Blog Post Title</a>#}
+{#                    </h2>#}
+{#                    <p class="lead">#}
+{#                        by <a href="index.php">Start Bootstrap</a>#}
+{#                    </p>#}
+{#                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>#}
+{#                    <hr>#}
+{#                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
+{#                    <hr>#}
+{#                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>#}
+{#                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>#}
+{##}
+{#                    <hr>#}
+{##}
+{#                    <!-- Third Blog Post -->#}
+{#                    <h2>#}
+{#                        <a href="#">Blog Post Title</a>#}
+{#                    </h2>#}
+{#                    <p class="lead">#}
+{#                        by <a href="index.php">Start Bootstrap</a>#}
+{#                    </p>#}
+{#                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>#}
+{#                    <hr>#}
+{#                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
+{#                    <hr>#}
+{#                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>#}
+{#                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>#}
+{##}
+{#                    <hr>#}
 
                     <!-- Pager -->
                     <ul class="pager">

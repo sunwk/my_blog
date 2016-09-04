@@ -19,10 +19,10 @@
 
 
     <!-- Bootstrap Core CSS -->
-    <link href="../static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
 
     <!-- Custom CSS -->
-    <link href="../static/css/blog-home.css" rel="stylesheet">
+    <link href="/static/css/blog-home.css" rel="stylesheet">
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -30,7 +30,8 @@
     <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
     <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    <script src="//cdn.bootcss.com/jquery/3.1.0/jquery.min.js"></script>
+    <script src="/static/js/jquery.js"></script>
+
 </head>
 <body style="background-color:#EEE">
 
@@ -76,6 +77,7 @@
     <!-- /.container -->
 </nav>
 
+<div id="id-div-blog_id" data-blog_id="{{ blog.id }}">
 
 <div class="container">
     <article class="article the-font">
@@ -85,22 +87,22 @@
         <div class="col-md-10 col-md-offset-1">
 
             <h1 class="page-header">
-                我的博客
+                {{ blog.user.username }}的博客
                 <small>详情</small>
             </h1>
 
             <!-- First Blog Post -->
             <h2>
-                <p>Blog Post Title</p>
+                <p>{{ blog.title }}</p>
             </h2>
             <p class="lead">
-                by <a href="index.php">Start Bootstrap</a>
+                by <a href="/{{ blog.user_id }}">{{ blog.user.username }}</a>
             </p>
-            <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
             <hr>
             <img class="img-responsive" src="http://placehold.it/900x300" alt="">
             <hr>
-            <p>{{ blog }}啊懂法发送扥阿萨扥</p>
+            <p>{{ blog.content }}</p>
 
             <hr>
 
@@ -130,44 +132,6 @@
                 <small>详情</small>
             </h1>
             <ul id="x-comment-list" class="uk-comment-list">
-                <li>
-                    <div class="uk-comment">
-                        <div class="uk-comment-header" style="margin-bottom:0">
-                            <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
-                                    class="uk-comment-avatar uk-border-circle x-avatar"
-                                    src="http://tva3.sinaimg.cn/crop.0.0.170.170.50/006wfzUWjw8f5chyr9i1uj304q04qt8h.jpg"
-                                    width="50" height="50" alt=""></a>
-                            <h4 class="uk-comment-title"><a target="_blank"
-                                                            href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">精英加油，感谢分享</a>
-                            </h4>
-                            <div class="uk-comment-meta"><a target="_blank"
-                                                            href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">大河马的大鼻子</a>
-                                created at 8-15 10:54, Last updated at 8-15 10:54
-                            </div>
-                        </div>
-                        <div class="uk-comment-body x-auto-content">
-                            <p>廖哥，首先感谢你无私的分享自己的知识和经验。</p>
-                            <p>提一个小建议，感谢费修改一下，1元钱，5元钱，10元钱，50元钱。</p>
-                            <p>可能您不在乎这点钱，不是靠这个钱过日子，但是有没有试过额度定小一点，是不是可能会带来更多的小费呢？</p>
-                            <p>哦，对了，YouTube的推荐功能是python写的</p>
-
-                        </div>
-                    </div>
-                    <ul>
-                        <li>
-                            <div class="x-comment-info">
-                                <hr>
-                                <a target="_blank" class="uk-button uk-button-small"
-                                   href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000"><i
-                                        class="uk-icon-list-ul"></i> View Full Discuss</a>
-                                &nbsp;
-                                <a target="_blank" class="uk-button uk-button-small"
-                                   href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000#reply"><i
-                                        class="uk-icon-reply"></i> Reply This Topic</a>
-                            </div>
-                        </li>
-                    </ul>
-                </li>
                 {% for comment in comments %}
                     <li>
                         <div class="uk-comment">
@@ -180,7 +144,7 @@
                                                                 href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">{{ comment.title }}</a>
                                 </h4>
                                 <div class="uk-comment-meta"><a target="_blank"
-                                                                href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">待补充用户名</a>
+                                                                href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">{{ user.username }}</a>
                                     created at {{ comment.created_time }}
                                 </div>
                             </div>
@@ -234,50 +198,7 @@
     </div>
 </article>
 </div>
-<!--&lt;!&ndash; Blog Search Well &ndash;&gt;-->
-<!--<div class="well">-->
-<!--<h4>Blog Search</h4>-->
-<!--<div class="input-group">-->
-<!--<input type="text" class="form-control">-->
-<!--<span class="input-group-btn">-->
-<!--<button class="btn btn-default" type="button">-->
-<!--<span class="glyphicon glyphicon-search"></span>-->
-<!--</button>-->
-<!--</span>-->
-<!--</div>-->
-<!--&lt;!&ndash; /.input-group &ndash;&gt;-->
-<!--</div>-->
 
-
-<!--<script>-->
-<!--$(document).ready(function () {-->
-<!--console.log('ready');-->
-<!--var button = $('#id-button-submit');-->
-<!--var title_input = $('#id-input-title');-->
-<!--var content_input = $('#id-input-content');-->
-<!--button.on('click', function () {-->
-<!--var title = title_input.val();-->
-<!--var content = content_input.val();-->
-<!--var data = {-->
-<!--title: title,-->
-<!--content: content-->
-<!--};-->
-<!--var url = "/blog/comments/add";-->
-<!--console.log('准备发送request');-->
-<!--var request = {-->
-<!--url: url,-->
-<!--contentType: 'application/json',-->
-<!--type: 'post',-->
-<!--data: data,-->
-<!--success: function (r) {-->
-<!--console.log('服务器返回了:', r);-->
-<!--}-->
-<!--};-->
-<!--$.ajax(request);-->
-<!--})-->
-<!--})-->
-
-<!--</script>-->
 <script>
     $(document).ready(function () {
         console.log('ready');
@@ -287,6 +208,7 @@
         button.on('click', function () {
             var title = title_input.val();
             var content = content_input.val();
+            var blog_id = $('#id-div-blog_id').data('blog_id');
             preparsedContent = content.split('\n');
             var completeContent = '';
             for(var i=0; i<preparsedContent.length; i++){
@@ -298,7 +220,8 @@
             console.log('拼接完成的评论html :',completeContent);
             var data = {
                 title: title,
-                content: completeContent
+                content: completeContent,
+                blog_id: blog_id
             };
             var json_data = JSON.stringify(data);
             console.log('debug json_data :', json_data);
@@ -309,7 +232,11 @@
                 data: json_data,
                 success: function (r) {
                     console.log('服务器返回了:', r);
-                    insertComment(r)
+                    if (r.success){
+                        insertComment(r)
+                    }else {
+                        alert('请先注册登录再评论')
+                    }
                 }
             };
             $.ajax(request);
@@ -331,9 +258,6 @@
         var id = comment.id;
         var content = comment.content;
         var created_time = comment.created_time;
-        // name 需要自行去抓去一些有用的
-        // 封面图片自行去抓去一些 取名为 1.jpg  2.jpg  3.jpg
-        // 然后灌数据库的时候就可以直接 灌出有用的 coverUrl 了
         var t = `
         <li>
             <div class="uk-comment">

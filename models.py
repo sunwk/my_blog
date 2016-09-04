@@ -110,10 +110,12 @@ class Comment(db.Model):
     created_time = db.Column(db.String())
 
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
 
     def __init__(self, form):
         self.title = form.get('title', '')
         self.content = form.get('content', '')
+        self.blog_id = form.get('blog_id', '')
         self.created_time = ''
 
     def __repr__(self):
