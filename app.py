@@ -129,7 +129,12 @@ def logout():
 
 @app.route('/about', methods=['GET'])
 def profile_view():
-    return render_template('aboutme.html')
+    u = current_user()
+    if u is not None:
+        user_id = u.id
+    else:
+        user_id = False
+    return render_template('aboutme.html', user_id=user_id)
 
 
 @app.route('/blog/details/<blog_id>', methods=['GET'])

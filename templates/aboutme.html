@@ -12,7 +12,8 @@
     <link rel="stylesheet" type="text/css" href="/static/css/blogcss2.css">
 
     <link rel="shortcut icon" href="/static/gagasalamer.ico">
-
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
     <style type="text/css">
         h1 {
@@ -44,7 +45,7 @@
     $SCRIPT_ROOT = "";
 </script>
 <body style="background-color:#EEE">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -63,13 +64,11 @@
                         <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
+{#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                        <a id="id-a-writeblog" href="#">Write blog</a>
                     </li>
                 </ul>
-                <form action="/register" class="navbar-form navbar-right">
+                <form action="/register" class="navbar-form navbar-right" method="post">
                     <div class="form-group">
                       <input type="text" placeholder="Username" name="username" class="form-control">
                     </div>
@@ -77,12 +76,14 @@
                       <input type="password" placeholder="Password" name="password" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success">Sign in</button>
-                </form>
-            </div>
+                    <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
+                 </form>
+           </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
+    <div id="id-div-current_user" data-current_user="{{ user_id }}">
     <br>
     <br>
     <br>
@@ -334,12 +335,24 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var button = $('#id-a-writeblog');
+        button.on('click', function () {
+            console.log('点击了写博客按钮');
+            var currentUserId = $('#id-div-current_user').data('current_user');
+            if (currentUserId){
+                window.location.href = '/editor/' + currentUserId
+            }else {
+                alert('请先注册登录')
+            }
+        })
 
-<script type="text/javascript" src="/static/dist/js/vendor/jquery.min.js"></script>
-
-<script type="text/javascript" src="/static/mystyle.js"></script>
-
-<script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    })
+</script>
+<script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 
 
 </body>
