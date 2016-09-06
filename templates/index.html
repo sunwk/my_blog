@@ -18,7 +18,7 @@
     <!-- Custom CSS -->
     <link href="../static/css/blog-home.css" rel="stylesheet">
 
-    <script src="/static/js/jquery.js"></script>
+    <script src="../static/js/jquery.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -50,7 +50,6 @@
     })
 </script>
 <body style="background-color:#EEE">
-{#    <div id="id-div-current_user" data-current_user_id="{{ current_user.id }}">#}
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
@@ -71,7 +70,8 @@
                         <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="/editor/{{ user.id }}">Write blog</a>
+{#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                        <a id="id-a-writeblog" href="#">Write blog</a>
                     </li>
                 </ul>
                 <form action="/register" class="navbar-form navbar-right" method="post">
@@ -89,6 +89,9 @@
         </div>
         <!-- /.container -->
     </nav>
+
+    <div id="id-div-current_user" data-current_user_id="{{ current_user_id }}"></div>
+
 
     <!-- Page Content -->
         <div class="container">
@@ -116,42 +119,11 @@
                     <hr>
                     <img class="img-responsive" src="http://placehold.it/900x300" alt="">
                     <hr>
-                    <p>{{ blog.content }}</p>
+                    <p id="id-p-blogcontent">{{ blog.content }}</p>
                     <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
                     <hr>
                     {% endfor %}
-{#                    <!-- Second Blog Post -->#}
-{#                    <h2>#}
-{#                        <a href="#">Blog Post Title</a>#}
-{#                    </h2>#}
-{#                    <p class="lead">#}
-{#                        by <a href="index.php">Start Bootstrap</a>#}
-{#                    </p>#}
-{#                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>#}
-{#                    <hr>#}
-{#                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
-{#                    <hr>#}
-{#                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>#}
-{#                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>#}
-{##}
-{#                    <hr>#}
-{##}
-{#                    <!-- Third Blog Post -->#}
-{#                    <h2>#}
-{#                        <a href="#">Blog Post Title</a>#}
-{#                    </h2>#}
-{#                    <p class="lead">#}
-{#                        by <a href="index.php">Start Bootstrap</a>#}
-{#                    </p>#}
-{#                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>#}
-{#                    <hr>#}
-{#                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
-{#                    <hr>#}
-{#                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>#}
-{#                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>#}
-{##}
-{#                    <hr>#}
 
                     <!-- Pager -->
                     <ul class="pager">
@@ -274,6 +246,21 @@
         </div>
     </div>
 </div>
+    <script>
+    $(document).ready(function () {
+        var button = $('#id-a-writeblog');
+        button.on('click', function () {
+            console.log('点击了写博客按钮');
+            var currentUserId = $('#id-div-current_user').data('current_user_id');
+            if (currentUserId=='False'){
+                alert('请先注册登录')
+            }else {
+                window.location.href = '/editor/' + currentUserId
+            }
+        })
+
+    })
+    </script>
     <!-- /.container -->
 
     <!-- jQuery -->

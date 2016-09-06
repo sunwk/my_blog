@@ -69,8 +69,7 @@ def blogs_view(user_id):
         # 当前没用户登录，默认加载自己的(id=1)blog
         blogs = Blog.query.filter_by(user_id=id_of_mine).all()
         user = User.query.filter_by(id=id_of_mine).first()
-        arg['current_user_id'] = id_of_mine
-    # blog = 'adsfadsfa sdfasdfasdfadsfads fasdfas dfasdfa dsfadsfasdfasdfa sdfadsfadsfasdf asdfasdfadsfa dsfasdfasdfasd fadsfadsfas dfasdfas dfadsfadsf asdfasdfa sdfadsf adsfasdfa sdfasdfadsfad sfasdfasdf asdfadsfadsfasdfasdf asdfad sfadsfasdfasdfasd fadsfa d sfasdfasdfas dfads fadsfa d sfasdfasdfas dfads d sfasdfasdfas dfads fadsfa d sfasdfasdfas dfads d sfasdfasdfas dfads fadsfa d sfasdfasdfas dfads d sfasdfasdfas dfads fadsfa d sfasdfasdfas dfads d sfasdfasdfas dfads fadsfa d sfasdfasdfas dfads '
+        arg['current_user_id'] = False
     else:
         # 当前有用户登录，加载动态路由中的user_id对应的用户blog
         blogs = Blog.query.filter_by(user_id=user_id).all()
@@ -80,11 +79,7 @@ def blogs_view(user_id):
     arg['user'] = user
     for blog in arg['blogs']:
         blog.content = blog.content[:200]
-    # arg = dict(
-    #     blogs=blogs,
-    #     user=user,
-    #     current_user=current_user()
-    # )
+    log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
 
@@ -119,6 +114,7 @@ def register():
 def logout():
     u = current_user()
     if u is not None:
+        log('current usr is', u.id, u.username)
         session.pop('user_id')
     r = dict(
         success=True,

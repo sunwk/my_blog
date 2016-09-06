@@ -55,7 +55,8 @@
                         <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="/editor/{{ user.id }}">Write blog</a>
+{#                        <a href="/editor/{{ user.id }}">Write blog#}
+                        <a id="id-a-writeblog" href="#">Write blog</a>
                     </li>
                 </ul>
                 <form action="/register" class="navbar-form navbar-right" method="post">
@@ -75,7 +76,9 @@
     </nav>
 
 
-<div id="id-div-blog_id" data-blog_id="{{ blog.id }}">
+    <div id="id-div-blog_id" data-blog_id="{{ blog.id }}">
+    <div id="id-div-current_user" data-current_user="{{ user.id }}">
+
 
 <div class="container">
     <article class="article the-font">
@@ -256,6 +259,7 @@
         var id = comment.id;
         var content = comment.content;
         var created_time = comment.created_time;
+        var username = comment.username;
         var t = `
         <li>
             <div class="uk-comment">
@@ -268,7 +272,7 @@
                                                     href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">${title}</a>
                     </h4>
                     <div class="uk-comment-meta"><a target="_blank"
-                                                    href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">待补充用户名</a>
+                                                    href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">${username}</a>
                         created at ${created_time}
                     </div>
                 </div>
@@ -306,6 +310,39 @@
             console.log('currentDiv content:', content);
             $(currentDiv).html(content);
         }
+    });
+
+    $(document).ready(function () {
+        var button = $('#id-a-writeblog');
+        button.on('click', function () {
+            console.log('点击了写博客按钮');
+            var currentUserId = $('#id-div-current_user').data('current_user');
+            if (currentUserId=='False'){
+                alert('请先注册登录')
+            }else {
+                window.location.href = '/editor/' + currentUserId
+            }
+        })
+
+    });
+
+    $(document).ready(function () {
+        //var currentUserId = $('#id-div-current_user').data('id');
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success){
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
     })
 
 </script>
