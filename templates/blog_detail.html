@@ -103,7 +103,7 @@
             <hr>
             <img class="img-responsive" src="http://placehold.it/900x300" alt="">
             <hr>
-            <p>{{ blog.content }}</p>
+            <p id="id-p-blogcontent">{{ blog.content }}</p>
 
             <hr>
 
@@ -317,17 +317,17 @@
         button.on('click', function () {
             console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user');
-            if (currentUserId=='False'){
-                alert('请先注册登录')
-            }else {
+            if (typeof (currentUserId)=='number'){
                 window.location.href = '/editor/' + currentUserId
+            }else {
+                alert('请先登录注册')
             }
         })
 
     });
 
     $(document).ready(function () {
-        //var currentUserId = $('#id-div-current_user').data('id');
+        var currentUserId = $('#id-div-current_user').data('id');
         var button = $('#id-button-logout');
         var url = '/logout';
         button.on('click', function () {
@@ -343,9 +343,28 @@
             };
             $.ajax(request);
         })
+    });
+
+    $(document).ready(function () {
+        marked.setOptions({
+          renderer: new marked.Renderer(),
+          gfm: true,
+          tables: true,
+          breaks: true,
+          pedantic: false,
+          sanitize: true,
+          smartLists: true,
+          smartypants: false
+        });
+        console.log(marked('# Marked in browser\n\nRendered by **marked**.'));
+
+        var p = $('#id-p-blogcontent');
+        var content = p.text();
+        console.log('待转化的markedown格式:',content);
+        console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
+        p.html(marked(content))
     })
-
 </script>
-
+<script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>
 </body>
 </html>

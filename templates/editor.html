@@ -51,11 +51,8 @@
 </head>
 
 <body style="background-color:#EEE">
-
-<!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
@@ -65,7 +62,6 @@
                 </button>
                 <a class="navbar-brand" href="/">Home</a>
             </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li>
@@ -87,15 +83,10 @@
                     <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
                  </form>
            </div>
-            <!-- /.navbar-collapse -->
         </div>
-        <!-- /.container -->
     </nav>
 
-{#<div data-id='{{ user_id }}' style="cursor:pointer" class="btn btn-primary btn-large btn-block btn-like-add col-sm-10">#}
-{#    提交文章#}
-{#    <span id="id-span-commit" aria-hidden="True"></span>#}
-{#</div>#}
+
 
   <!-- sample modal content -->
   <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -123,32 +114,32 @@
       Click to add a title and submit blog
     </button>
   </div>
-{#<div data-id='{{ user_id }}'>#}
-{#    <button id="id-button-commit" class="btn btn-primary btn-block">提交文章</button>#}
-{#</div>#}
+
+
 <div id="editormd">
         <textarea style="display:none;">### Hello Editor.md !</textarea>
 </div>
 <script>
     $(document).ready(function () {
         console.log('ready');
-        commitBlog()
+        LogOut()
     });
 
-    var commitBlog = function () {
+    $(document).ready(function () {
         var button = $('#id-button-commit');
         button.on('click', function () {
-            var content = $('.CodeMirror').text();
-            console.log('要提交的内容:', content);
+            //var content = $('.CodeMirror').text();
+            var content = $('.editormd-markdown-textarea').text();
             var title = $('#id-input-title').val();
-            console.log('要提交的标题:', title);
             var user_id = $('#id-div-dataset').data('id');
             var blog = {
-                user_id: user_id,
-                title: title,
-                content: content
-            };
-            var parsed_blog = JSON.stringify(blog);
+            user_id: user_id,
+            title: title,
+            content: content
+        };
+        var parsed_blog = JSON.stringify(blog);
+            alert(content);
+            alert(title);
             var request = {
                 url: "/blog/add",
                 contentType: 'application/json',
@@ -163,9 +154,9 @@
             };
             $.ajax(request)
         })
-    };
+    });
 
-    $(document).ready(function () {
+    var LogOut = function () {
         //var currentUserId = $('#id-div-current_user').data('id');
         var button = $('#id-button-logout');
         var url = '/logout';
@@ -182,7 +173,7 @@
             };
             $.ajax(request);
         })
-    })
+    }
 
 </script>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>

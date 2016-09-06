@@ -252,10 +252,10 @@
         button.on('click', function () {
             console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user_id');
-            if (currentUserId=='False'){
-                alert('请先注册登录')
-            }else {
+            if (typeof (currentUserId)=='number'){
                 window.location.href = '/editor/' + currentUserId
+            }else {
+                alert('请先注册登录')
             }
         })
 

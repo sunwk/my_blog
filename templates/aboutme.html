@@ -341,9 +341,9 @@
             console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user');
             if (currentUserId=='False'){
-                alert('请先注册登录')
-            }else {
                 window.location.href = '/editor/' + currentUserId
+            }else {
+                alert('请先注册登录')
             }
         })
 
