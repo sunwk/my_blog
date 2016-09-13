@@ -78,8 +78,8 @@ def blogs_view(user_id):
     log('待加载的博客:',[i.content for i in blogs])
     arg['blogs'] = blogs
     arg['user'] = user
-    # for blog in arg['blogs']:
-    #     blog.content = blog.content[:200]
+    for blog in arg['blogs']:
+        blog.content = blog.content[:200]
     log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
