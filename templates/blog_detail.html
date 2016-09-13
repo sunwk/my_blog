@@ -356,12 +356,13 @@
           smartLists: true,
           smartypants: false
         });
-        console.log(marked('# Marked in browser\n\nRendered by **marked**.'));
+        //console.log(marked('# Marked in browser\n\nRendered by **marked**.'));
 
         var p = $('#id-p-blogcontent');
         var content = p.text();
-        console.log('待转化的markedown格式:',content);
-        console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
+        console.log('看一看后端传过来的文章内容有没有格式：', content);
+        //console.log('待转化的markedown格式:',content);
+        //console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
         p.html(marked(content))
     })
 </script>

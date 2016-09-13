@@ -75,10 +75,11 @@ def blogs_view(user_id):
         blogs = Blog.query.filter_by(user_id=user_id).all()
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
+    log('待加载的博客:',[i.content for i in blogs])
     arg['blogs'] = blogs
     arg['user'] = user
-    for blog in arg['blogs']:
-        blog.content = blog.content[:200]
+    # for blog in arg['blogs']:
+    #     blog.content = blog.content[:200]
     log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
@@ -147,6 +148,7 @@ def blog_detail_view(blog_id):
             user=user
             # user=user
         )
+        log('发回前端的文章内容，查看一下格式问题:',blog.content)
     else:
         abort(404)
     return render_template('blog_detail.html', **arg)
@@ -185,6 +187,7 @@ def editor_view(user_id):
 @app.route('/blog/add', methods=['POST'])
 def blog_add():
     form = request.get_json()
+    log('发回的md格式文章：',form)
     blog = Blog(form)
     blog.created_time = time.time()
     blog.save()
@@ -195,6 +198,7 @@ def blog_add():
         'content': blog.content,
         'created_time': blog.created_time,
     }
+    log('发回前端的文章信息:', jsonify(response))
     return jsonify(response)
 
 
