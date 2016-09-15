@@ -46,6 +46,13 @@ class User(db.Model):
         class_name = self.__class__.__name__
         return u'<{}: {}>'.format(class_name, self.id)
 
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
+        return d
+
     # def __str__(self):
     #     class_name = self.__class__.__name__
     #     return u'<ID:{} Username:{} Sex:{} Role:{}>'\
@@ -93,6 +100,13 @@ class Blog(db.Model):
         class_name = self.__class__.__name__
         return u'<{}: {}>'.format(class_name, self.id)
 
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
+        return d
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -121,6 +135,13 @@ class Comment(db.Model):
     def __repr__(self):
         class_name = self.__class__.__name__
         return u'<{}: {}>'.format(class_name, self.id)
+
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
+        return d
 
     def save(self):
         db.session.add(self)

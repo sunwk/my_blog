@@ -102,36 +102,39 @@
                 <!-- Blog Entries Column -->
                 <div class="col-md-8">
 
-                    <h1 class="page-header">
+                    <h1 id="id-h1-top" class="page-header">
                         我的博客
                         <small>概览</small>
                     </h1>
 
                     <!-- First Blog Post -->
-                    {% for blog in blogs %}
-                    <h2>
-                        <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="/{{ user.id }}">{{ user.username }}</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p class="class-p-blogcontent">{{ blog.content }}</p>
-                    <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+                    <div id="id-div-blogitems">
+                        {% for blog in blogs %}
+                            <h2>
+                                <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
+                            </h2>
+                            <p class="lead">
+                                by <a class="class-a-user_id" href="/{{ user.id }}">{{ user.username }}</a>
+                            </p>
+                            <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
+                            <hr>
+{#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
+                            <img class="img-responsive" src="../static/img/01.jpg">
+                            <hr>
+                            <p class="class-p-blogcontent">{{ blog.content }}</p>
+                            <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
-                    <hr>
-                    {% endfor %}
+                            <hr>
+                        {% endfor %}
+                    </div>
 
                     <!-- Pager -->
                     <ul class="pager">
                         <li class="previous">
-                            <a href="#">&larr; Older</a>
+                            <a id="id-a-older" href="#">&larr; Older</a>
                         </li>
                         <li class="next">
-                            <a href="#">Newer &rarr;</a>
+                            <a id="id-a-newer" href="#">Newer &rarr;</a>
                         </li>
                     </ul>
 
@@ -286,9 +289,58 @@
         }
     });
 
+    $(document).ready(function () {
+        var offset = 0;
+        var limit = 3;
+        var nextButton = $('#id-a-older');
+        var beforeButton = $('#id-a-newer');
 
+        var deleteItems = function () {
+            var currentItems = $('#id-div-blogitems');
+            currentItems.empty()
+        };
+
+
+        var clickNext = function () {
+            var temp = $('.class-a-user_id')[0];
+            var url = $(temp).attr('href');
+            var request = {
+                url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+                type: 'get',
+                success: function (data) {
+                    offset += limit;
+                    console.log('换页收到的数据:', data);
+                    //deleteitems();
+                    //insertitems(data)
+                }
+            };
+            $.ajax(request)
+
+            var clickbefore = function () {
+
+            };
+
+            var insertitems = function () {
+
+            };
+            //var switchpage = function () {
+
+            //     var request = {
+            //        url: url + '?offset=' + offset + '&limit=' + limit,
+            //        type: 'get',
+            //         success: function () {
+
+            //          }
+
+            //       }
+            //     }
+        };
+        beforeButton.on('click', clickNext);
+
+    })
     </script>
     <!-- /.container -->
+
 
 
     <script src="../static/js/marked.js"></script>

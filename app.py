@@ -75,13 +75,48 @@ def blogs_view(user_id):
         blogs = Blog.query.filter_by(user_id=user_id).all()
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
+    blogs.sort(key=lambda t: t.created_time, reverse=True)
     log('待加载的博客:',[i.content for i in blogs])
-    arg['blogs'] = blogs
+    arg['blogs'] = blogs[:3]
     arg['user'] = user
     for blog in arg['blogs']:
         blog.content = blog.content[:200]
     log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
+
+
+@app.route('/api/<user_id>', methods=['GET'])
+def blogs_api(user_id):
+    args = request.args
+    offset = args.get('offset', 0)
+    limit = args.get('limit', 3)
+    offset = int(offset)
+    limit = int(limit)
+    u = current_user()
+    arg ={}
+    if u is None:
+        id_of_mine = 1
+        # 当前没用户登录，默认加载自己的(id=1)blog
+        blogs = Blog.query.filter_by(user_id=id_of_mine).all()
+        user = User.query.filter_by(id=id_of_mine).first()
+        arg['current_user_id'] = False
+    else:
+        # 当前有用户登录，加载动态路由中的user_id对应的用户blog
+        blogs = Blog.query.filter_by(user_id=user_id).all()
+        user = User.query.filter_by(id=user_id).first()
+        arg['current_user_id'] = u.id
+    blogs.sort(key=lambda t: t.created_time, reverse=True)
+    log('待加载的博客:', [i.content for i in blogs])
+    # 本次拿出的博客，转化为字典
+    blogs_to_show = blogs[offset:offset + limit]
+    arg['blogs'] = [blog.json() for blog in blogs_to_show]
+    log('adfadsfasdfadsfasdfa asdfkjlasjflaj;sdlfjalsdfjklajsdfkl',arg['blogs'])
+    arg['user'] = user.json()
+    # 首页显示二百个字符
+    for blog in arg['blogs']:
+        blog['content'] = blog['content'][:200]
+    log('index current user is', arg['current_user_id'])
+    return jsonify(arg)
 
 
 @app.route('/register', methods=['POST'])
