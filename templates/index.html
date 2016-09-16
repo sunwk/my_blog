@@ -116,7 +116,7 @@
                             <p class="lead">
                                 by <a class="class-a-user_id" href="/{{ user.id }}">{{ user.username }}</a>
                             </p>
-                            <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
+                            <p><span class="glyphicon glyphicon-time"></span> Posted on <time>{{ blog.created_time }}</time></p>
                             <hr>
 {#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
                             <img class="img-responsive" src="../static/img/01.jpg">
@@ -325,7 +325,7 @@
                 <p class="lead">
                     by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
                 </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on ${blog_createdTime}</p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
                 <hr>
                 <img class="img-responsive" src="../static/img/01.jpg">
                 <hr>
@@ -350,7 +350,24 @@
         };
         beforeButton.on('click', clickNext);
 
-    })
+    });
+
+        $(document).ready(function () {
+            var unixTime = $('time');
+            for (var i=0; i<unixTime.length; i++){
+                var t = $(unixTime[i]).text();
+                // 比如需要这样的格式 yyyy-MM-dd hh:mm:ss
+                var date = new Date(Number(t));
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                var D = date.getDate() + ' ';
+                var h = date.getHours() + ':';
+                var m = date.getMinutes() + ':';
+                var s = date.getSeconds();
+                alert(Y+M+D+h+m+s); //呀麻碟
+                // 输出结果：2014-04-23 18:55:49
+            }
+        })
     </script>
     <!-- /.container -->
 
