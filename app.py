@@ -11,6 +11,7 @@ from models import User
 from models import Blog
 from models import Comment
 
+import random
 import time
 
 
@@ -64,6 +65,7 @@ def root_view():
 def blogs_view(user_id):
     u = current_user()
     arg ={}
+    other_blogs = []
     if u is None:
         id_of_mine = 1
         # 当前没用户登录，默认加载自己的(id=1)blog
@@ -76,7 +78,13 @@ def blogs_view(user_id):
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
     blogs.sort(key=lambda t: t.created_time, reverse=True)
-    log('待加载的博客:',[i.content for i in blogs])
+    log('待加载的博客:', [i.content for i in blogs])
+    total_blog_num = len(Blog.query.all())
+    for i in range(8):
+        random_id = random.randint(1, total_blog_num)
+        other_blog = Blog.query.filter_by(id=random_id).first()
+        other_blogs.append(other_blog)
+    arg['other_blogs'] = other_blogs
     arg['blogs'] = blogs[:3]
     arg['user'] = user
     for blog in arg['blogs']:
