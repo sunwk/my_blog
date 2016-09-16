@@ -110,12 +110,12 @@ def blogs_api(user_id):
     # 本次拿出的博客，转化为字典
     blogs_to_show = blogs[offset:offset + limit]
     arg['blogs'] = [blog.json() for blog in blogs_to_show]
-    log('adfadsfasdfadsfasdfa asdfkjlasjflaj;sdlfjalsdfjklajsdfkl',arg['blogs'])
     arg['user'] = user.json()
     # 首页显示二百个字符
     for blog in arg['blogs']:
         blog['content'] = blog['content'][:200]
     log('index current user is', arg['current_user_id'])
+    log('adfadsfasdfadsfasdfa asdfkjlasjflaj;sdlfjalsdfjklajsdfkl',arg)
     return jsonify(arg)
 
 

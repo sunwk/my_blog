@@ -18,7 +18,6 @@
     <!-- Custom CSS -->
     <link href="../static/css/blog-home.css" rel="stylesheet">
 
-    <script src="../static/js/jquery.js"></script>
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -26,6 +25,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="../static/js/jquery.js"></script>
 
 
 </head>
@@ -290,7 +290,7 @@
     });
 
     $(document).ready(function () {
-        var offset = 0;
+        var offset = 3;
         var limit = 3;
         var nextButton = $('#id-a-older');
         var beforeButton = $('#id-a-newer');
@@ -310,18 +310,49 @@
                 success: function (data) {
                     offset += limit;
                     console.log('换页收到的数据:', data);
-                    //deleteitems();
-                    //insertitems(data)
+                    deleteItems();
+                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                    for (var i=0; i<data.blogs.length; i++){
+                        insertItems(data, i)
+                    }
                 }
             };
-            $.ajax(request)
+            $.ajax(request);
 
             var clickbefore = function () {
 
             };
 
-            var insertitems = function () {
+            var insertItems = function (data, i) {
+                var t = blogTemplate(data, i);
+                $('#id-div-blogitems').append(t)
 
+            };
+            var blogTemplate = function (data, i) {
+                var user_id = data.user.id;
+                var user_name = data.user.username;
+                var blog = data.blogs[i];
+                var blog_id = blog.id;
+                var blog_title = blog.title;
+                var blog_createdTime = blog.created_time;
+                var blog_content = blog.content;
+                var t = `
+                <h2>
+                    <a href="/blog/details/${blog_id}">${blog_title}</a>
+                </h2>
+                <p class="lead">
+                    by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on ${blog_createdTime}</p>
+                <hr>
+                <img class="img-responsive" src="../static/img/01.jpg">
+                <hr>
+                <p class="class-p-blogcontent">${blog_content}</p>
+                <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+                `;
+                return t
             };
             //var switchpage = function () {
 
