@@ -131,10 +131,10 @@
                     <!-- Pager -->
                     <ul class="pager">
                         <li class="previous">
-                            <a id="id-a-older" href="#">&larr; Older</a>
+                            <a id="id-a-newer" href="#">&larr; Newer</a>
                         </li>
                         <li class="next">
-                            <a id="id-a-newer" href="#">Newer &rarr;</a>
+                            <a id="id-a-older" href="#">Older &rarr;</a>
                         </li>
                     </ul>
 
@@ -272,10 +272,8 @@
     });
 
     $(document).ready(function () {
-        var offset = 3;
-        var limit = 3;
-        var nextButton = $('#id-a-older');
-        var beforeButton = $('#id-a-newer');
+        var olderButton = $('#id-a-older');
+        var newerButton = $('#id-a-newer');
 
         var deleteItems = function () {
             var currentItems = $('#id-div-blogitems');
@@ -283,7 +281,9 @@
         };
 
 
-        var clickNext = function () {
+        var clickOlder = function () {
+            var offset = 3;
+            var limit = 3;
             var temp = $('.class-a-user_id')[0];
             var url = $(temp).attr('href');
             var request = {
@@ -301,15 +301,12 @@
             };
             $.ajax(request);
 
-            var clickbefore = function () {
-
-            };
-
             var insertItems = function (data, i) {
                 var t = blogTemplate(data, i);
                 $('#id-div-blogitems').append(t)
 
             };
+
             var blogTemplate = function (data, i) {
                 var user_id = data.user.id;
                 var user_name = data.user.username;
@@ -336,27 +333,68 @@
                 `;
                 return t
             };
-            //var switchpage = function () {
-
-            //     var request = {
-            //        url: url + '?offset=' + offset + '&limit=' + limit,
-            //        type: 'get',
-            //         success: function () {
-
-            //          }
-
-            //       }
-            //     }
         };
-        beforeButton.on('click', clickNext);
+        olderButton.on('click', clickOlder);
 
+        var clickNewer = function () {
+            var offset = 0;
+            var limit = 3;
+            var temp = $('.class-a-user_id')[0];
+            var url = $(temp).attr('href');
+            var request = {
+                url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+                type: 'get',
+                success: function (data) {
+                    offset -= limit;
+                    console.log('换页收到的数据:', data);
+                    deleteItems();
+                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                    for (var i=0; i<data.blogs.length; i++){
+                        insertItems(data, i)
+                    }
+                }
+            };
+            $.ajax(request);
+
+            var insertItems = function (data, i) {
+                var t = blogTemplate(data, i);
+                $('#id-div-blogitems').append(t)
+            };
+
+            var blogTemplate = function (data, i) {
+                var user_id = data.user.id;
+                var user_name = data.user.username;
+                var blog = data.blogs[i];
+                var blog_id = blog.id;
+                var blog_title = blog.title;
+                var blog_createdTime = blog.created_time;
+                var blog_content = blog.content;
+                var t = `
+                <h2>
+                    <a href="/blog/details/${blog_id}">${blog_title}</a>
+                </h2>
+                <p class="lead">
+                    by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
+                </p>
+                <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
+                <hr>
+                <img class="img-responsive" src="../static/img/01.jpg">
+                <hr>
+                <p class="class-p-blogcontent">${blog_content}</p>
+                <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+                <hr>
+                `;
+                return t
+            };
+        };
+        newerButton.on('click', clickNewer);
     });
 
         $(document).ready(function () {
             var unixTime = $('time');
             for (var i=0; i<unixTime.length; i++){
                 var t = $(unixTime[i]).text();
-                // 比如需要这样的格式 yyyy-MM-dd hh:mm:ss
                 var date = new Date(Number(t));
                 var Y = date.getFullYear() + '-';
                 var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
@@ -364,8 +402,7 @@
                 var h = date.getHours() + ':';
                 var m = date.getMinutes() + ':';
                 var s = date.getSeconds();
-                alert(Y+M+D+h+m+s); //呀麻碟
-                // 输出结果：2014-04-23 18:55:49
+                $(unixTime[i]).text(Y+M+D+h+m+s);
             }
         })
     </script>

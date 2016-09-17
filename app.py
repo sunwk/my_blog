@@ -92,7 +92,8 @@ def blogs_view(user_id):
     log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
-
+# {'title': '555555555555555', 'id': 5, 'user': <User: 1>, 'created_time': '1474033266.74831', 'content': '### Hello Editor.md !\n555555555555555555555555555555', 'user_id': 1}
+# {'user_id': 1, 'content': '### Hello Editor.md !\n2222222222222222222', 'title': '2222222222222', 'created_time': '1474031806.26777', 'id': 2}
 @app.route('/api/<user_id>', methods=['GET'])
 def blogs_api(user_id):
     args = request.args
@@ -119,11 +120,11 @@ def blogs_api(user_id):
     blogs_to_show = blogs[offset:offset + limit]
     arg['blogs'] = [blog.json() for blog in blogs_to_show]
     arg['user'] = user.json()
+    log('adfafdasdfadsfasdfdsf!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg)
     # 首页显示二百个字符
     for blog in arg['blogs']:
         blog['content'] = blog['content'][:200]
     log('index current user is', arg['current_user_id'])
-    log('adfadsfasdfadsfasdfa asdfkjlasjflaj;sdlfjalsdfjklajsdfkl',arg)
     return jsonify(arg)
 
 
