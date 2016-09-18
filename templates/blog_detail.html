@@ -201,7 +201,7 @@
 </div>
 
 <script>
-    $(document).ready(function () {
+    var addComment = function () {
         console.log('ready');
         var button = $('#id-button-submit');
         var title_input = $('#id-input-title');
@@ -242,17 +242,15 @@
             };
             $.ajax(request);
         })
-    });
+    };
 
     
     var insertComment = function (comment) {
-//        for (var i = 0; i < products.length; i++) {
-//            var c = comments[i];
             console.log('comment', comment.title);
             var t = commentTemplate(comment);
             $('#x-comment-list').append(t);
         };
-//    };
+
 
     var commentTemplate = function (comment) {
         var title = comment.title;
@@ -299,7 +297,7 @@
         return t;
     };
 
-    $(document).ready(function () {
+    var commentTsf = function () {
         var divs = $('.x-auto-content');
         console.log('div', divs);
         for (var i=0; i<divs.length; i++){
@@ -310,24 +308,23 @@
             console.log('currentDiv content:', content);
             $(currentDiv).html(content);
         }
-    });
+    };
 
-    $(document).ready(function () {
+    var logWarning = function () {
         var button = $('#id-a-writeblog');
         button.on('click', function () {
             console.log('点击了写博客按钮');
-            var currentUserId = $('#id-div-current_user').data('current_user');
+            var currentUserId = $('#id-div-current_user').data('current_user_id');
             if (typeof (currentUserId)=='number'){
                 window.location.href = '/editor/' + currentUserId
             }else {
-                alert('请先登录注册')
+                alert('请先注册登录')
             }
         })
 
-    });
+    };
 
-    $(document).ready(function () {
-        var currentUserId = $('#id-div-current_user').data('id');
+    var logOut = function () {
         var button = $('#id-button-logout');
         var url = '/logout';
         button.on('click', function () {
@@ -343,9 +340,9 @@
             };
             $.ajax(request);
         })
-    });
+    };
 
-    $(document).ready(function () {
+    var mdTsf = function () {
         marked.setOptions({
           renderer: new marked.Renderer(),
           gfm: true,
@@ -356,14 +353,23 @@
           smartLists: true,
           smartypants: false
         });
-        //console.log(marked('# Marked in browser\n\nRendered by **marked**.'));
 
         var p = $('#id-p-blogcontent');
         var content = p.text();
         console.log('看一看后端传过来的文章内容有没有格式：', content);
-        //console.log('待转化的markedown格式:',content);
-        //console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
         p.html(marked(content))
+    };
+
+    var main = function () {
+        addComment();
+        commentTsf();
+        logWarning();
+        logOut();
+        mdTsf();
+    };
+
+    $(document).ready(function () {
+        main()
     })
 </script>
 <script src="//cdn.bootcss.com/marked/0.3.6/marked.js"></script>

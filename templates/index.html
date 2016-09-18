@@ -258,7 +258,6 @@
           smartLists: true,
           smartypants: false
         });
-        //console.log(marked('# Marked in browser\n\nRendered by **marked**.'));
 
         var contents = $('.class-p-blogcontent');
         console.log('选中的所有p', contents);
@@ -266,8 +265,6 @@
             console.log('选中的当前content', contents[i]);
             var content = $(contents[i]).text();
             console.log('选中的当前content的内容：', content);
-            //console.log('待转化的markedown格式:',content);
-            //console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
             $(contents[i]).html(marked(content))
         }
     };
