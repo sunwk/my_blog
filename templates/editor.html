@@ -117,15 +117,29 @@
 
 
 <div id="editormd">
-        <textarea style="display:none;">### Hello Editor.md !</textarea>
+        <textarea style="display:none;">### Hello World !</textarea>
 </div>
 <script>
-    $(document).ready(function () {
-        console.log('ready');
-        LogOut()
-    });
+    var LogOut = function () {
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success){
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
+    };
 
-    $(document).ready(function () {
+
+    var submitMdFile = function () {
         var button = $('#id-button-commit');
         button.on('click', function () {
             //var content = $('.CodeMirror').text();
@@ -154,27 +168,17 @@
             };
             $.ajax(request)
         })
-    });
+    };
 
-    var LogOut = function () {
-        //var currentUserId = $('#id-div-current_user').data('id');
-        var button = $('#id-button-logout');
-        var url = '/logout';
-        button.on('click', function () {
-            var request = {
-                url: url,
-                type: 'get',
-                success: function (r) {
-                    console.log('服务器返回了:', r);
-                    if (r.success){
-                        window.location.href = r.url
-                    }
-                }
-            };
-            $.ajax(request);
-        })
-    }
 
+    var main = function () {
+        LogOut();
+        submitMdFile();
+    };
+
+    $(document).ready(function () {
+        main()
+    })
 </script>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
