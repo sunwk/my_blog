@@ -29,26 +29,7 @@
 
 
 </head>
-<script>
-    $(document).ready(function () {
-        //var currentUserId = $('#id-div-current_user').data('id');
-        var button = $('#id-button-logout');
-        var url = '/logout';
-        button.on('click', function () {
-            var request = {
-                url: url,
-                type: 'get',
-                success: function (r) {
-                    console.log('服务器返回了:', r);
-                    if (r.success){
-                        window.location.href = r.url
-                    }
-                }
-            };
-            $.ajax(request);
-        })
-    })
-</script>
+
 <body style="background-color:#EEE">
     <!-- Navigation -->
     <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -232,7 +213,26 @@
     </div>
 </div>
     <script>
-    $(document).ready(function () {
+
+    var logOut = function () {
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success){
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
+    };
+
+    var logWarning = function () {
         var button = $('#id-a-writeblog');
         button.on('click', function () {
             console.log('点击了写博客按钮');
@@ -244,9 +244,10 @@
             }
         })
 
-    });
+    };
 
-    $(document).ready(function () {
+
+    var mdTsf = function () {
         marked.setOptions({
           renderer: new marked.Renderer(),
           gfm: true,
@@ -269,17 +270,65 @@
             //console.log('转化后的markedown格式:',marked('1### Hello Editor.md !2# 这里是aaaa'));
             $(contents[i]).html(marked(content))
         }
-    });
+    };
 
-    $(document).ready(function () {
-        var olderButton = $('#id-a-older');
-        var newerButton = $('#id-a-newer');
+        var timeTsf = function () {
+            var unixTime = $('time');
+            for (var i=0; i<unixTime.length; i++){
+                var t = $(unixTime[i]).text();
+                var date = new Date(Number(t));
+                var Y = date.getFullYear() + '-';
+                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
+                var D = date.getDate() + ' ';
+                var h = date.getHours() + ':';
+                var m = date.getMinutes() + ':';
+                var s = date.getSeconds();
+                $(unixTime[i]).text(Y+M+D+h+m+s);
+            }
+        };
+
+
+
+
+
 
         var deleteItems = function () {
             var currentItems = $('#id-div-blogitems');
             currentItems.empty()
         };
 
+        var insertItems = function (data, i) {
+            var t = blogTemplate(data, i);
+            $('#id-div-blogitems').append(t)
+
+        };
+
+        var blogTemplate = function (data, i) {
+            var user_id = data.user.id;
+            var user_name = data.user.username;
+            var blog = data.blogs[i];
+            var blog_id = blog.id;
+            var blog_title = blog.title;
+            var blog_createdTime = blog.created_time;
+            var blog_content = blog.content;
+            var t = `
+            <h2>
+                <a href="/blog/details/${blog_id}">${blog_title}</a>
+            </h2>
+            <p class="lead">
+                by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
+            </p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
+            <hr>
+            <img class="img-responsive" src="../static/img/01.jpg">
+            <hr>
+            <p class="class-p-blogcontent">${blog_content}</p>
+            <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+            <hr>
+            `;
+            return t
+        };
 
         var clickOlder = function () {
             var offset = 3;
@@ -294,117 +343,37 @@
                     console.log('换页收到的数据:', data);
                     deleteItems();
                     // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
-                    for (var i=0; i<data.blogs.length; i++){
+                    for (var i = 0; i < data.blogs.length; i++) {
                         insertItems(data, i)
                     }
                 }
             };
             $.ajax(request);
-
-            var insertItems = function (data, i) {
-                var t = blogTemplate(data, i);
-                $('#id-div-blogitems').append(t)
-
-            };
-
-            var blogTemplate = function (data, i) {
-                var user_id = data.user.id;
-                var user_name = data.user.username;
-                var blog = data.blogs[i];
-                var blog_id = blog.id;
-                var blog_title = blog.title;
-                var blog_createdTime = blog.created_time;
-                var blog_content = blog.content;
-                var t = `
-                <h2>
-                    <a href="/blog/details/${blog_id}">${blog_title}</a>
-                </h2>
-                <p class="lead">
-                    by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
-                <hr>
-                <img class="img-responsive" src="../static/img/01.jpg">
-                <hr>
-                <p class="class-p-blogcontent">${blog_content}</p>
-                <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                <hr>
-                `;
-                return t
-            };
         };
+
+    var switchPage = function () {
+        var olderButton = $('#id-a-older');
+        var newerButton = $('#id-a-newer');
         olderButton.on('click', clickOlder);
+    };
 
-        var clickNewer = function () {
-            var offset = 0;
-            var limit = 3;
-            var temp = $('.class-a-user_id')[0];
-            var url = $(temp).attr('href');
-            var request = {
-                url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
-                type: 'get',
-                success: function (data) {
-                    offset -= limit;
-                    console.log('换页收到的数据:', data);
-                    deleteItems();
-                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
-                    for (var i=0; i<data.blogs.length; i++){
-                        insertItems(data, i)
-                    }
-                }
-            };
-            $.ajax(request);
 
-            var insertItems = function (data, i) {
-                var t = blogTemplate(data, i);
-                $('#id-div-blogitems').append(t)
-            };
 
-            var blogTemplate = function (data, i) {
-                var user_id = data.user.id;
-                var user_name = data.user.username;
-                var blog = data.blogs[i];
-                var blog_id = blog.id;
-                var blog_title = blog.title;
-                var blog_createdTime = blog.created_time;
-                var blog_content = blog.content;
-                var t = `
-                <h2>
-                    <a href="/blog/details/${blog_id}">${blog_title}</a>
-                </h2>
-                <p class="lead">
-                    by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
-                </p>
-                <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
-                <hr>
-                <img class="img-responsive" src="../static/img/01.jpg">
-                <hr>
-                <p class="class-p-blogcontent">${blog_content}</p>
-                <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+    var main = function () {
+        logOut();
+        logWarning();
+        mdTsf();
+        timeTsf();
+        switchPage()
+    };
 
-                <hr>
-                `;
-                return t
-            };
-        };
-        newerButton.on('click', clickNewer);
-    });
+    $(document).ready(function () {
+        main();
+    })
+</script>
+    <script>
 
-        $(document).ready(function () {
-            var unixTime = $('time');
-            for (var i=0; i<unixTime.length; i++){
-                var t = $(unixTime[i]).text();
-                var date = new Date(Number(t));
-                var Y = date.getFullYear() + '-';
-                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                var D = date.getDate() + ' ';
-                var h = date.getHours() + ':';
-                var m = date.getMinutes() + ':';
-                var s = date.getSeconds();
-                $(unixTime[i]).text(Y+M+D+h+m+s);
-            }
-        })
+
     </script>
     <!-- /.container -->
 

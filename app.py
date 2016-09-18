@@ -115,16 +115,17 @@ def blogs_api(user_id):
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
     blogs.sort(key=lambda t: t.created_time, reverse=True)
-    log('待加载的博客:', [i.content for i in blogs])
     # 本次拿出的博客，转化为字典
     blogs_to_show = blogs[offset:offset + limit]
+    log('blogs_to_showblogs_to_showblogs_to_showblogs_to_showblogs_to_sho',blogs_to_show)
+    log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', blogs[0].json())
     arg['blogs'] = [blog.json() for blog in blogs_to_show]
+    log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg['blogs'][0])
     arg['user'] = user.json()
-    log('adfafdasdfadsfasdfdsf!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg)
-    # 首页显示二百个字符
+    # 缩略页显示二百个字符
     for blog in arg['blogs']:
         blog['content'] = blog['content'][:200]
-    log('index current user is', arg['current_user_id'])
+    # log('index current user is', arg['current_user_id'])
     return jsonify(arg)
 
 
