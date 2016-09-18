@@ -119,7 +119,7 @@ def blogs_api(user_id):
     blogs_to_show = blogs[offset:offset + limit]
     log('blogs_to_showblogs_to_showblogs_to_showblogs_to_showblogs_to_sho',blogs_to_show)
     log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', blogs[0].json())
-    arg['blogs'] = [blog.json() for blog in blogs_to_show]
+    arg['blogs'] = [blog.json() for blog in blogs]
     log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg['blogs'][0])
     arg['user'] = user.json()
     # 缩略页显示二百个字符
