@@ -92,8 +92,7 @@ def blogs_view(user_id):
     log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
-# {'title': '555555555555555', 'id': 5, 'user': <User: 1>, 'created_time': '1474033266.74831', 'content': '### Hello Editor.md !\n555555555555555555555555555555', 'user_id': 1}
-# {'user_id': 1, 'content': '### Hello Editor.md !\n2222222222222222222', 'title': '2222222222222', 'created_time': '1474031806.26777', 'id': 2}
+
 @app.route('/api/<user_id>', methods=['GET'])
 def blogs_api(user_id):
     args = request.args
@@ -117,16 +116,14 @@ def blogs_api(user_id):
     blogs.sort(key=lambda t: t.created_time, reverse=True)
     # 本次拿出的博客，转化为字典
     blogs_to_show = blogs[offset:offset + limit]
-    # log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', blogs[0].json())
     arg['blogs'] = [blog.json() for blog in blogs_to_show]
-    # log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg['blogs'][0])
     arg['user'] = user.json()
     arg['user']['blogs'] = [b.json() for b in arg['user']['blogs']]
+    blog_num = len(arg['user']['blogs'])
+    arg['blog_num'] = blog_num
     # 缩略页显示二百个字符
     for blog in arg['blogs']:
         blog['content'] = blog['content'][:200]
-    # log('index current user is', arg['current_user_id'])
-    # log('debugdebugdebugdebug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!', arg)
     return jsonify(arg)
 
 

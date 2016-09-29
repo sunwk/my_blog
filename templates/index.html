@@ -338,8 +338,10 @@
             url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
             type: 'get',
             success: function (data) {
-                offset += limit;
                 console.log('换页收到的数据:', data);
+                if (data.blog_num >= offset + 3) {
+                    offset += limit;
+                }
                 deleteItems();
                 // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
                 for (var i = 0; i < data.blogs.length; i++) {
@@ -353,12 +355,14 @@
     var clickNewer = function () {
         var temp = $('.class-a-user_id')[0];
         var url = $(temp).attr('href');
-        var c_offset = offset -= limit*2;
+        var c_offset = offset - limit;
         var request = {
             url: '/api' + url + '?offset=' + c_offset + '&limit=' + limit,
             type: 'get',
             success: function (data) {
-                offset += limit;
+                if (offset > 3) {
+                    offset -= limit;
+                }
                 console.log('换页收到的数据:', data);
                 deleteItems();
                 // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
