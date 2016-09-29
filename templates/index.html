@@ -31,95 +31,99 @@
 </head>
 
 <body style="background-color:#EEE">
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Home</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/about">About</a>
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                <li>
+                    {#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                    <a id="id-a-writeblog" href="#">Write blog</a>
+                </li>
+            </ul>
+            <form action="/register" class="navbar-form navbar-right" method="post">
+                <div class="form-group">
+                    <input type="text" placeholder="Username" name="username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+                <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
+
+<div id="id-div-current_user" data-current_user_id="{{ current_user_id }}"></div>
+
+
+<!-- Page Content -->
+<div class="container">
+    <article class="article the-font">
+
+        <div class="row">
+
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+
+                <h1 id="id-h1-top" class="page-header">
+                    我的博客
+                    <small>概览</small>
+                </h1>
+
+                <!-- First Blog Post -->
+                <div id="id-div-blogitems">
+                    {% for blog in blogs %}
+                        <h2>
+                            <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
+                        </h2>
+                        <p class="lead">
+                            by <a class="class-a-user_id" href="/{{ user.id }}">{{ user.username }}</a>
+                        </p>
+                        <p><span class="glyphicon glyphicon-time"></span> Posted on
+                            <time>{{ blog.created_time }}</time>
+                        </p>
+                        <hr>
+                        {#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
+                        <img class="img-responsive" src="../static/img/01.jpg">
+                        <hr>
+                        <p class="class-p-blogcontent">{{ blog.content }}</p>
+                        <a class="btn btn-primary" href="/blog/details">Read More <span
+                                class="glyphicon glyphicon-chevron-right"></span></a>
+
+                        <hr>
+                    {% endfor %}
+                </div>
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a id="id-a-newer" href="#">&larr; Newer</a>
                     </li>
-                    <li>
-{#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
-                        <a id="id-a-writeblog" href="#">Write blog</a>
+                    <li class="next">
+                        <a id="id-a-older" href="#">Older &rarr;</a>
                     </li>
                 </ul>
-                <form action="/register" class="navbar-form navbar-right" method="post">
-                    <div class="form-group">
-                      <input type="text" placeholder="Username" name="username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" placeholder="Password" name="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign in</button>
-                    <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
-                 </form>
-           </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
 
-    <div id="id-div-current_user" data-current_user_id="{{ current_user_id }}"></div>
-
-
-    <!-- Page Content -->
-        <div class="container">
-            <article class="article the-font">
-
-            <div class="row">
-
-                <!-- Blog Entries Column -->
-                <div class="col-md-8">
-
-                    <h1 id="id-h1-top" class="page-header">
-                        我的博客
-                        <small>概览</small>
-                    </h1>
-
-                    <!-- First Blog Post -->
-                    <div id="id-div-blogitems">
-                        {% for blog in blogs %}
-                            <h2>
-                                <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
-                            </h2>
-                            <p class="lead">
-                                by <a class="class-a-user_id" href="/{{ user.id }}">{{ user.username }}</a>
-                            </p>
-                            <p><span class="glyphicon glyphicon-time"></span> Posted on <time>{{ blog.created_time }}</time></p>
-                            <hr>
-{#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
-                            <img class="img-responsive" src="../static/img/01.jpg">
-                            <hr>
-                            <p class="class-p-blogcontent">{{ blog.content }}</p>
-                            <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                            <hr>
-                        {% endfor %}
-                    </div>
-
-                    <!-- Pager -->
-                    <ul class="pager">
-                        <li class="previous">
-                            <a id="id-a-newer" href="#">&larr; Newer</a>
-                        </li>
-                        <li class="next">
-                            <a id="id-a-older" href="#">Older &rarr;</a>
-                        </li>
-                    </ul>
-
-                </div>
+            </div>
 
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
@@ -145,7 +149,7 @@
                         <div class="col-lg-12">
                             <ul class="list-unstyled">
                                 {% for blog in other_blogs %}
-                                    <li><a href="#">{{ blog.title }}</a> --- by <a>{{ blog.user.username }}</a>
+                                    <li><a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a> --- by <a href="/{{ blog.user.id }}">{{ blog.user.username }}</a>
                                 {% endfor %}
                                 </li>
                             </ul>
@@ -157,7 +161,8 @@
                 <!-- Side Widget Well -->
                 <div class="well">
                     <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci
+                        accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
                 </div>
 
             </div>
@@ -178,9 +183,9 @@
             <!-- /.row -->
         </footer>
     </article>
-    </div>
+</div>
 
-    <div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
+<div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
     <div class="container">
         <div class="row" style="padding-top:30px;">
             <div class="col-md-7">
@@ -212,7 +217,7 @@
         </div>
     </div>
 </div>
-    <script>
+<script>
 
     var logOut = function () {
         var button = $('#id-button-logout');
@@ -223,7 +228,7 @@
                 type: 'get',
                 success: function (r) {
                     console.log('服务器返回了:', r);
-                    if (r.success){
+                    if (r.success) {
                         window.location.href = r.url
                     }
                 }
@@ -237,9 +242,9 @@
         button.on('click', function () {
             console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user_id');
-            if (typeof (currentUserId)=='number'){
+            if (typeof (currentUserId) == 'number') {
                 window.location.href = '/editor/' + currentUserId
-            }else {
+            } else {
                 alert('请先注册登录')
             }
         })
@@ -249,19 +254,19 @@
 
     var mdTsf = function () {
         marked.setOptions({
-          renderer: new marked.Renderer(),
-          gfm: true,
-          tables: true,
-          breaks: true,
-          pedantic: false,
-          sanitize: true,
-          smartLists: true,
-          smartypants: false
+            renderer: new marked.Renderer(),
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: false,
+            sanitize: true,
+            smartLists: true,
+            smartypants: false
         });
 
         var contents = $('.class-p-blogcontent');
         console.log('选中的所有p', contents);
-        for (var i=0; i<contents.length; i++){
+        for (var i = 0; i < contents.length; i++) {
             console.log('选中的当前content', contents[i]);
             var content = $(contents[i]).text();
             console.log('选中的当前content的内容：', content);
@@ -269,42 +274,42 @@
         }
     };
 
-        var timeTsf = function () {
-            var unixTime = $('time');
-            for (var i=0; i<unixTime.length; i++){
-                var t = $(unixTime[i]).text();
-                var date = new Date(Number(t));
-                var Y = date.getFullYear() + '-';
-                var M = (date.getMonth()+1 < 10 ? '0'+(date.getMonth()+1) : date.getMonth()+1) + '-';
-                var D = date.getDate() + ' ';
-                var h = date.getHours() + ':';
-                var m = date.getMinutes() + ':';
-                var s = date.getSeconds();
-                $(unixTime[i]).text(Y+M+D+h+m+s);
-            }
-        };
+    var timeTsf = function () {
+        var unixTime = $('time');
+        for (var i = 0; i < unixTime.length; i++) {
+            var t = $(unixTime[i]).text();
+            var date = new Date(Number(t));
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = date.getDate() + ' ';
+            var h = date.getHours() + ':';
+            var m = date.getMinutes() + ':';
+            var s = date.getSeconds();
+            $(unixTime[i]).text(Y + M + D + h + m + s);
+        }
+    };
 
 
-        var deleteItems = function () {
-            var currentItems = $('#id-div-blogitems');
-            currentItems.empty()
-        };
+    var deleteItems = function () {
+        var currentItems = $('#id-div-blogitems');
+        currentItems.empty()
+    };
 
-        var insertItems = function (data, i) {
-            var t = blogTemplate(data, i);
-            $('#id-div-blogitems').append(t)
+    var insertItems = function (data, i) {
+        var t = blogTemplate(data, i);
+        $('#id-div-blogitems').append(t)
 
-        };
+    };
 
-        var blogTemplate = function (data, i) {
-            var user_id = data.user.id;
-            var user_name = data.user.username;
-            var blog = data.blogs[i];
-            var blog_id = blog.id;
-            var blog_title = blog.title;
-            var blog_createdTime = blog.created_time;
-            var blog_content = blog.content;
-            var t = `
+    var blogTemplate = function (data, i) {
+        var user_id = data.user.id;
+        var user_name = data.user.username;
+        var blog = data.blogs[i];
+        var blog_id = blog.id;
+        var blog_title = blog.title;
+        var blog_createdTime = blog.created_time;
+        var blog_content = blog.content;
+        var t = `
             <h2>
                 <a href="/blog/details/${blog_id}">${blog_title}</a>
             </h2>
@@ -320,36 +325,35 @@
 
             <hr>
             `;
-            return t
-        };
+        return t
+    };
 
-        var clickOlder = function () {
-            var offset = 3;
-            var limit = 3;
-            var temp = $('.class-a-user_id')[0];
-            var url = $(temp).attr('href');
-            var request = {
-                url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
-                type: 'get',
-                success: function (data) {
-                    offset += limit;
-                    console.log('换页收到的数据:', data);
-                    deleteItems();
-                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
-                    for (var i = 0; i < data.blogs.length; i++) {
-                        insertItems(data, i)
-                    }
+    var clickOlder = function () {
+        var offset = 3;
+        var limit = 3;
+        var temp = $('.class-a-user_id')[0];
+        var url = $(temp).attr('href');
+        var request = {
+            url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+            type: 'get',
+            success: function (data) {
+                offset += limit;
+                console.log('换页收到的数据:', data);
+                deleteItems();
+                // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                for (var i = 0; i < data.blogs.length; i++) {
+                    insertItems(data, i)
                 }
-            };
-            $.ajax(request);
+            }
         };
+        $.ajax(request);
+    };
 
     var switchPage = function () {
         var olderButton = $('#id-a-older');
         var newerButton = $('#id-a-newer');
         olderButton.on('click', clickOlder);
     };
-
 
 
     var main = function () {
@@ -364,19 +368,13 @@
         main();
     })
 </script>
-    <script>
 
+<script src="../static/js/marked.js"></script>
+<!-- jQuery -->
+<script src="../static/js/jquery.js"></script>
 
-    </script>
-
-
-
-    <script src="../static/js/marked.js"></script>
-    <!-- jQuery -->
-    <script src="../static/js/jquery.js"></script>
-
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/js/bootstrap.min.js"></script>
 
 </body>
 
