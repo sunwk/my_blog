@@ -328,7 +328,7 @@
     };
 
     var clickOlder = function () {
-        var offset = 3;
+        var offset = 0;
         var limit = 3;
         var temp = $('.class-a-user_id')[0];
         var url = $(temp).attr('href');
@@ -348,10 +348,32 @@
         $.ajax(request);
     };
 
+    var clickNewer = function () {
+        var offset = 3;
+        var limit = 3;
+        var temp = $('.class-a-user_id')[0];
+        var url = $(temp).attr('href');
+        var request = {
+            url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+            type: 'get',
+            success: function (data) {
+                offset += limit;
+                console.log('换页收到的数据:', data);
+                deleteItems();
+                // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                for (var i = 0; i < data.blogs.length; i++) {
+                    insertItems(data, i)
+                }
+            }
+        };
+        $.ajax(request);
+    };
+    
     var switchPage = function () {
         var olderButton = $('#id-a-older');
         var newerButton = $('#id-a-newer');
         olderButton.on('click', clickOlder);
+        newerButton.on('click', clickNewer);
     };
 
 
