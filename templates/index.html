@@ -92,6 +92,7 @@
                 <!-- First Blog Post -->
                 <div id="id-div-blogitems">
                     {% for blog in blogs %}
+                        <div class="blogitems">
                         <h2>
                             <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
                         </h2>
@@ -110,6 +111,7 @@
                                 class="glyphicon glyphicon-chevron-right"></span></a>
 
                         <hr>
+                        </div>
                     {% endfor %}
                 </div>
 
@@ -309,6 +311,7 @@
         var blog_createdTime = blog.created_time;
         var blog_content = blog.content;
         var t = `
+            <div class="blogitems">
             <h2>
                 <a href="/blog/details/${blog_id}">${blog_title}</a>
             </h2>
@@ -323,6 +326,7 @@
             <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
 
             <hr>
+            </div>
             `;
         return t
     };
@@ -368,7 +372,7 @@
         };
         $.ajax(request);
     };
-    
+
     var switchPage = function () {
         var olderButton = $('#id-a-older');
         var newerButton = $('#id-a-newer');
