@@ -332,8 +332,6 @@
     };
 
     var clickOlder = function () {
-        var offset = 0;
-        var limit = 3;
         var temp = $('.class-a-user_id')[0];
         var url = $(temp).attr('href');
         var request = {
@@ -353,12 +351,11 @@
     };
 
     var clickNewer = function () {
-        var offset = 3;
-        var limit = 3;
         var temp = $('.class-a-user_id')[0];
         var url = $(temp).attr('href');
+        var c_offset = offset -= limit*2;
         var request = {
-            url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+            url: '/api' + url + '?offset=' + c_offset + '&limit=' + limit,
             type: 'get',
             success: function (data) {
                 offset += limit;
@@ -372,6 +369,9 @@
         };
         $.ajax(request);
     };
+
+    var offset = 3;
+    var limit = 3;
 
     var switchPage = function () {
         var olderButton = $('#id-a-older');
