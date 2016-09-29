@@ -33,7 +33,7 @@ class User(db.Model):
     note = db.Column(db.String())
     role = db.Column(db.Integer, default=2)
     # 这是引用别的表的数据的属性，表明了它关联的东西
-    blogs = db.relationship('Blog', backref='user')
+    blogs = db.relationship('Blog', backref='user', lazy='immediate')
 
     def __init__(self, form):
         super(User, self).__init__()
