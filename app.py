@@ -232,7 +232,7 @@ def editor_view(user_id):
 @app.route('/blog/add', methods=['POST'])
 def blog_add():
     form = request.get_json()
-    log('发回的md格式文章：',form)
+    log('发回的md格式文章：', form)
     blog = Blog(form)
     blog.created_time = time.time()
     blog.save()
