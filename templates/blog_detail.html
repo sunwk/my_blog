@@ -139,10 +139,10 @@
                             <div class="uk-comment-header" style="margin-bottom:0">
                                 <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
                                         class="uk-comment-avatar uk-border-circle x-avatar"
-                                        src="http://tva3.sinaimg.cn/crop.0.0.170.170.50/006wfzUWjw8f5chyr9i1uj304q04qt8h.jpg"
+                                        src="{{ url_for('static', filename='img/03.jpg') }}"
                                         width="50" height="50" alt=""></a>
-                                <h4 class="uk-comment-title"><a target="_blank"
-                                                                href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">{{ comment.title }}</a>
+                                <h4 class="uk-comment-title">
+                                    {{ comment.title }}
                                 </h4>
                                 <div class="uk-comment-meta"><a target="_blank"
                                                                 href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">{{ user.username }}</a>
@@ -276,10 +276,10 @@
                 <div class="uk-comment-header" style="margin-bottom:0">
                     <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
                             class="uk-comment-avatar uk-border-circle x-avatar"
-                            src="http://tva3.sinaimg.cn/crop.0.0.170.170.50/006wfzUWjw8f5chyr9i1uj304q04qt8h.jpg"
+                            src="/static/img/03.jpg"
                             width="50" height="50" alt=""></a>
-                    <h4 class="uk-comment-title"><a target="_blank"
-                                                    href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000">${title}</a>
+                    <h4 class="uk-comment-title">
+                        ${title}
                     </h4>
                     <div class="uk-comment-meta"><a target="_blank"
                                                     href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">${username}</a>
