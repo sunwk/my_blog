@@ -124,7 +124,7 @@ class Comment(db.Model):
     created_time = db.Column(db.String())
 
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
-    user_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, form):
         self.title = form.get('title', '')
@@ -142,6 +142,29 @@ class Comment(db.Model):
         self.id
         d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
         return d
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class Todo(db.Model):
+    __tablename__ = 'todos'
+    id = db.Column(db.Integer, primary_key=True)
+    todo = db.Column(db.String())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, form):
+        self.todo = form.get('todo', '')
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        return u'<{}: {}>'.format(class_name, self.id)
 
     def save(self):
         db.session.add(self)

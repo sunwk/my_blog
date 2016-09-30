@@ -10,6 +10,7 @@ from flask import abort
 from models import User
 from models import Blog
 from models import Comment
+from models import Todo
 
 import random
 import time
@@ -77,8 +78,10 @@ def blogs_view(user_id):
         blogs = Blog.query.filter_by(user_id=user_id).all()
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
+        tds = Todo.query.filter_by(user_id=u.id).all()
+        tds.sort(key=lambda t: t.id, reverse=True)
+        arg['todos'] = tds[:8]
     blogs.sort(key=lambda t: t.created_time, reverse=True)
-    log('待加载的博客:', [i.content for i in blogs])
     total_blog_num = len(Blog.query.all())
     for i in range(8):
         random_id = random.randint(1, total_blog_num)
@@ -89,7 +92,6 @@ def blogs_view(user_id):
     arg['user'] = user
     for blog in arg['blogs']:
         blog.content = blog.content[:200]
-    log('index current user is', arg['current_user_id'])
     return render_template('index.html', **arg)
 
 
@@ -244,6 +246,20 @@ def blog_add():
     log('发回前端的文章信息:', jsonify(response))
     return jsonify(response)
 
+
+@app.route('/api/todo/add', methods=['POST'])
+def todo_add():
+    u = current_user()
+    data = request.get_json()
+    todo = Todo(data)
+    if u is not None:
+        todo.user_id = u.id
+    todo.save()
+    r = dict(
+        success=True,
+        todo=todo.todo
+    )
+    return jsonify(r)
 
     #
     # @app.route('/blog/comments', methods=['POST'])

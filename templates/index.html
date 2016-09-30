@@ -151,9 +151,10 @@
                         <div class="col-lg-12">
                             <ul class="list-unstyled">
                                 {% for blog in other_blogs %}
-                                    <li><a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a> --- by <a href="/{{ blog.user.id }}">{{ blog.user.username }}</a>
+                                    <li>
+                                        <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a> --- by <a href="/{{ blog.user.id }}">{{ blog.user.username }}</a>
+                                    </li>
                                 {% endfor %}
-                                </li>
                             </ul>
                         </div>
                     </div>
@@ -162,9 +163,24 @@
 
                 <!-- Side Widget Well -->
                 <div class="well">
-                    <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci
-                        accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <h4>My TodoList</h4>
+                    <ul>
+                        <div id="id-div-todo">
+                        {% for t in todos %}
+                        <li class="todoItems">
+                            <p>{{ t.todo }}</p>
+                        </li>
+                        {% endfor %}
+                        </div>
+                    </ul>
+                    <div class="input-group">
+                        <input id="id-input-todo" type="text" class="form-control">
+                        <span class="input-group-btn" id="id-button-todo">
+                            <button class="btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        </span>
+                    </div>
                 </div>
 
             </div>
@@ -385,16 +401,70 @@
     };
 
 
-    var main = function () {
+    var todoTemplate = function (r) {
+        var todo = r.todo;
+        var t = `
+        <li class="todoItems">
+            <p>${todo}</p>
+        </li>
+        `;
+        return t;
+    };
+
+    var insertTodo = function (r) {
+        var template = todoTemplate(r);
+        var div = $('#id-div-todo');
+        var todoItems = $('.todoItems');
+        if (todoItems.length <= 8){
+            alert('这是小于8')
+            todoItems[7].remove();
+            div.prepend(template)
+        }else {
+            alert('这是大鱼8')
+            div.prepend(template)
+        }
+    };
+
+
+    var postData = function () {
+        var todo = $('#id-input-todo').val();
+        var data = {
+            todo: todo
+        };
+        var parsed_data = JSON.stringify(data);
+
+        var request = {
+            url: '/api/todo/add',
+            contentType: 'application/json',
+            type: 'post',
+            data: parsed_data,
+            success: function (r) {
+                console.log('服务器返回了:', r);
+                if(r.success){
+                    insertTodo(r)
+                }
+            }
+        };
+        $.ajax(request)
+    };
+
+
+    var addTodo = function () {
+        var button = $('#id-button-todo');
+        button.on('click', postData);
+    };
+
+    var __main = function () {
         logOut();
         logWarning();
         mdTsf();
         timeTsf();
-        switchPage()
+        switchPage();
+        addTodo()
     };
 
     $(document).ready(function () {
-        main();
+        __main();
     })
 </script>
 
