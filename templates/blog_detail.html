@@ -101,7 +101,7 @@
             </p>
             <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
             <hr>
-            <img class="img-responsive" src="http://placehold.it/900x300" alt="">
+            <img class="img-responsive" src="{{ url_for('static', filename='img/02.jpg') }}">
             <hr>
             <p id="id-p-blogcontent">{{ blog.content }}</p>
 

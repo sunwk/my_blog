@@ -104,7 +104,7 @@
                         </p>
                         <hr>
                         {#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
-                        <img class="img-responsive" src="../static/img/01.jpg">
+                        <img class="img-responsive" src="{{ url_for('static', filename='img/02.jpg') }}">
                         <hr>
                         <p class="class-p-blogcontent">{{ blog.content }}</p>
                         <a class="btn btn-primary" href="/blog/details">Read More <span

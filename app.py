@@ -80,7 +80,7 @@ def blogs_view(user_id):
         arg['current_user_id'] = u.id
         tds = Todo.query.filter_by(user_id=u.id).all()
         tds.sort(key=lambda t: t.id, reverse=True)
-        arg['todos'] = tds[:8]
+        arg['todos'] = tds[:10]
     blogs.sort(key=lambda t: t.created_time, reverse=True)
     total_blog_num = len(Blog.query.all())
     for i in range(8):
@@ -261,17 +261,6 @@ def todo_add():
     )
     return jsonify(r)
 
-    #
-    # @app.route('/blog/comments', methods=['POST'])
-    # def blog_comment():
-    #     title = request.form.get('title','')
-    #     content = request.form.get('content', '')
-    #     print('form:',request.form)
-    #     print('args:',request.args)
-    #     print('title : ',title,'\ncontent : ', content)
-    #     # return redirect(url_for('blog_detail_view'))
-    #     r = '\ntitle:{}\ncontent:{}'.format(title, content)
-    #     return jsonify(r)
 
 if __name__ == '__main__':
     app.run(debug=True)
