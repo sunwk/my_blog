@@ -99,7 +99,7 @@
             <p class="lead">
                 by <a href="/{{ blog.user_id }}">{{ blog.user.username }}</a>
             </p>
-            <p><span class="glyphicon glyphicon-time"></span> Posted on {{ blog.created_time }}</p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on <time>{{ blog.created_time }}</time></p>
             <hr>
             <img class="img-responsive" src="{{ url_for('static', filename='img/02.jpg') }}">
             <hr>
@@ -146,7 +146,7 @@
                                 </h4>
                                 <div class="uk-comment-meta"><a target="_blank"
                                                                 href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">{{ user.username }}</a>
-                                    created at {{ comment.created_time }}
+                                    created at <time>{{ comment.created_time }}</time>
                                 </div>
                             </div>
                             <div class="uk-comment-body x-auto-content">
@@ -251,6 +251,17 @@
             $('#x-comment-list').append(t);
         };
 
+    var dateTime = function (time) {
+        var t = time;
+        var date = new Date(Number(t)*1000);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ':';
+        var s = date.getSeconds();
+        return Y + M + D + h + m + s;
+    };
 
     var commentTemplate = function (comment) {
         var title = comment.title;
@@ -258,6 +269,7 @@
         var content = comment.content;
         var created_time = comment.created_time;
         var username = comment.username;
+        var parsed_time = dateTime(created_time);
         var t = `
         <li>
             <div class="uk-comment">
@@ -271,7 +283,7 @@
                     </h4>
                     <div class="uk-comment-meta"><a target="_blank"
                                                     href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">${username}</a>
-                        created at ${created_time}
+                        created at <time>${parsed_time}</time>
                     </div>
                 </div>
                 <div class="uk-comment-body x-auto-content">
@@ -361,12 +373,28 @@
         p.html(marked(content))
     };
 
+    var timeTsf = function () {
+        var unixTime = $('time');
+        for (var i = 0; i < unixTime.length; i++) {
+            var t = $(unixTime[i]).text();
+            var date = new Date(Number(t)*1000);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+            var m = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ':';
+            var s = date.getSeconds();
+            $(unixTime[i]).text(Y + M + D + h + m + s);
+        }
+    };
+
     var main = function () {
         addComment();
         commentTsf();
         logWarning();
         logOut();
         mdTsf();
+        timeTsf()
     };
 
     $(document).ready(function () {
