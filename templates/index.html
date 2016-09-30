@@ -244,7 +244,7 @@
                 url: url,
                 type: 'get',
                 success: function (r) {
-                    console.log('服务器返回了:', r);
+                    //console.log('服务器返回了:', r);
                     if (r.success) {
                         window.location.href = r.url
                     }
@@ -257,7 +257,7 @@
     var logWarning = function () {
         var button = $('#id-a-writeblog');
         button.on('click', function () {
-            console.log('点击了写博客按钮');
+            //console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user_id');
             if (typeof (currentUserId) == 'number') {
                 window.location.href = '/editor/' + currentUserId
@@ -282,11 +282,11 @@
         });
 
         var contents = $('.class-p-blogcontent');
-        console.log('选中的所有p', contents);
+        //console.log('选中的所有p', contents);
         for (var i = 0; i < contents.length; i++) {
-            console.log('选中的当前content', contents[i]);
+            //console.log('选中的当前content', contents[i]);
             var content = $(contents[i]).text();
-            console.log('选中的当前content的内容：', content);
+            //console.log('选中的当前content的内容：', content);
             $(contents[i]).html(marked(content))
         }
     };
@@ -354,7 +354,7 @@
             url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
             type: 'get',
             success: function (data) {
-                console.log('换页收到的数据:', data);
+                //console.log('换页收到的数据:', data);
                 if (data.blog_num > offset) {
                     offset += limit;
                     deleteItems();
@@ -378,7 +378,7 @@
             success: function (data) {
                 if (offset > 3) {
                     offset -= limit;
-                    console.log('换页收到的数据:', data);
+                    //console.log('换页收到的数据:', data);
                     deleteItems();
                     // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
                     for (var i = 0; i < data.blogs.length; i++) {
@@ -415,8 +415,8 @@
         var template = todoTemplate(r);
         var div = $('#id-div-todo');
         var todoItems = $('.todoItems');
-        if (todoItems.length <= 8){
-            todoItems[7].remove();
+        if (todoItems.length <= 10){
+            todoItems[9].remove();
             div.prepend(template)
         }else {
             div.prepend(template)

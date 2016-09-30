@@ -126,7 +126,6 @@ def blogs_api(user_id):
     # 缩略页显示二百个字符
     for blog in arg['blogs']:
         blog['content'] = blog['content'][:200]
-    log('!!!!!!!!!!!!!!!!!!!', arg)
     return jsonify(arg)
 
 
