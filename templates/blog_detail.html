@@ -108,16 +108,14 @@
             <hr>
 
             <!-- Pager -->
-            <ul class="pager">
-                <li class="previous">
-                    <a href="#">&larr; Older</a>
-                </li>
-                <li class="next">
-                    <a href="#">Newer &rarr;</a>
-                </li>
-            </ul>
-
-            <hr>
+{#            <ul class="pager">#}
+{#                <li class="previous">#}
+{#                    <a href="#">&larr; Older</a>#}
+{#                </li>#}
+{#                <li class="next">#}
+{#                    <a href="#">Newer &rarr;</a>#}
+{#                </li>#}
+{#            </ul>#}
         </div>
     </div>
     </article>
@@ -137,7 +135,7 @@
                     <li>
                         <div class="uk-comment">
                             <div class="uk-comment-header" style="margin-bottom:0">
-                                <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
+                                <a target="_blank" href="/{{ comment.user_id }}"><img
                                         class="uk-comment-avatar uk-border-circle x-avatar"
                                         src="{{ url_for('static', filename='img/03.jpg') }}"
                                         width="50" height="50" alt=""></a>
@@ -145,7 +143,7 @@
                                     {{ comment.title }}
                                 </h4>
                                 <div class="uk-comment-meta"><a target="_blank"
-                                                                href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">{{ user.username }}</a>
+                                                                href="/{{ comment.user_id }}">{{ user.username }}</a>
                                     created at <time>{{ comment.created_time }}</time>
                                 </div>
                             </div>
@@ -157,13 +155,11 @@
                             <li>
                                 <div class="x-comment-info">
                                     <hr>
-                                    <a target="_blank" class="uk-button uk-button-small"
-                                       href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000"><i
-                                            class="uk-icon-list-ul"></i> View Full Discuss</a>
+                                    <a target="_blank" class="btn btn-sm btn-primary"
+                                       href="#"><i ></i> View Full Discuss</a>
                                     &nbsp;
-                                    <a target="_blank" class="uk-button uk-button-small"
-                                       href="/discuss/001409195742008d822b26cf3de46aea14f2b7378a1ba91000/0014712296710627da1cf7b96194d779f39f289a6200784000#reply"><i
-                                            class="uk-icon-reply"></i> Reply This Topic</a>
+                                    <a target="_blank" class="btn btn-sm btn-primary"
+                                       href="#"><i></i> Reply This Topic</a>
                                 </div>
                             </li>
                         </ul>
@@ -270,11 +266,12 @@
         var created_time = comment.created_time;
         var username = comment.username;
         var parsed_time = dateTime(created_time);
+        var user_id = comment.user_id;
         var t = `
         <li>
             <div class="uk-comment">
                 <div class="uk-comment-header" style="margin-bottom:0">
-                    <a target="_blank" href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000"><img
+                    <a target="_blank" href="/${user_id}"><img
                             class="uk-comment-avatar uk-border-circle x-avatar"
                             src="/static/img/03.jpg"
                             width="50" height="50" alt=""></a>
@@ -282,7 +279,7 @@
                         ${title}
                     </h4>
                     <div class="uk-comment-meta"><a target="_blank"
-                                                    href="/user/001470991008137fdbeeb76eebe45629a9b0da89ec34163000">${username}</a>
+                                                    href="/${user_id}">${username}</a>
                         created at <time>${parsed_time}</time>
                     </div>
                 </div>
