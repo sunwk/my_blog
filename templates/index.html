@@ -53,7 +53,7 @@
                 </li>
                 <li>
                     {#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
-                    <a id="id-a-writeblog" href="#">Write blog</a>
+                    <a class="logwarning" id="id-a-writeblog" href="#">Write blog</a>
                 </li>
             </ul>
             <form action="/register" class="navbar-form navbar-right" method="post">
@@ -107,7 +107,7 @@
                         <img class="img-responsive" src="{{ url_for('static', filename='img/02.jpg') }}">
                         <hr>
                         <p class="class-p-blogcontent">{{ blog.content }}</p>
-                        <a class="btn btn-primary" href="/blog/details">Read More <span
+                        <a class="btn btn-primary" href="/blog/details/{{ blog.id }}">Read More <span
                                 class="glyphicon glyphicon-chevron-right"></span></a>
 
                         <hr>
@@ -175,8 +175,8 @@
                     </ul>
                     <div class="input-group">
                         <input id="id-input-todo" type="text" class="form-control">
-                        <span class="input-group-btn" id="id-button-todo">
-                            <button class="btn btn-default" type="button">
+                        <span class="input-group-btn">
+                            <button id="id-button-todo" class="logwarning btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-pencil"></span>
                         </button>
                         </span>
@@ -214,8 +214,8 @@
                 <div>
                     <h5 style="margin-bottom:15px;margin-left:18px;"><strong>CONTACT ME</strong></h5>
                     <ul>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp
-                            WECHAT</a></li>
+                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp
+                            QQ</a></li>
 {#                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"#}
 {#                                                                                aria-hidden="true"></span> &nbsp WEIBO#}
 {#                        </li>#}
@@ -255,8 +255,8 @@
     };
 
     var logWarning = function () {
-        var button = $('#id-a-writeblog');
-        button.on('click', function () {
+        var buttons = $('.logwarning');
+        buttons.on('click', function () {
             //console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user_id');
             if (typeof (currentUserId) == 'number') {
@@ -265,7 +265,6 @@
                 alert('请先注册登录')
             }
         })
-
     };
 
 
@@ -318,13 +317,25 @@
 
     };
 
+    var dateTime = function (time) {
+        var t = time;
+        var date = new Date(Number(t)*1000);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ':';
+        var s = date.getSeconds();
+        return Y + M + D + h + m + s;
+    };
+
     var blogTemplate = function (data, i) {
         var user_id = data.user.id;
         var user_name = data.user.username;
         var blog = data.blogs[i];
         var blog_id = blog.id;
         var blog_title = blog.title;
-        var blog_createdTime = blog.created_time;
+        var blog_createdTime = dateTime(blog.created_time);
         var blog_content = blog.content;
         var t = `
             <div class="blogitems">
@@ -336,7 +347,7 @@
             </p>
             <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
             <hr>
-            <img class="img-responsive" src="../static/img/01.jpg">
+            <img class="img-responsive" src="../static/img/02.jpg">
             <hr>
             <p class="class-p-blogcontent">${blog_content}</p>
             <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
@@ -355,7 +366,7 @@
             type: 'get',
             success: function (data) {
                 //console.log('换页收到的数据:', data);
-                if (data.blog_num > offset) {
+                if (data.blog_num > offset - 3) {
                     offset += limit;
                     deleteItems();
                     // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}

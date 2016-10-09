@@ -14,7 +14,7 @@ from models import Todo
 
 import random
 import time
-
+import copy
 
 app = Flask(__name__)
 
@@ -79,7 +79,7 @@ def blogs_view(user_id):
         user = User.query.filter_by(id=user_id).first()
         arg['current_user_id'] = u.id
         tds = Todo.query.filter_by(user_id=u.id).all()
-        tds.sort(key=lambda t: t.id, reverse=True)
+        tds.sort(key=lambda t: t.created_time, reverse=True)
         arg['todos'] = tds[:10]
     blogs.sort(key=lambda t: t.created_time, reverse=True)
     total_blog_num = len(Blog.query.all())
@@ -88,10 +88,11 @@ def blogs_view(user_id):
         other_blog = Blog.query.filter_by(id=random_id).first()
         other_blogs.append(other_blog)
     arg['other_blogs'] = other_blogs
-    arg['blogs'] = blogs[:3]
+    arg['blogs'] = copy.deepcopy(blogs)[:3]
+    log(blogs)
     arg['user'] = user
     for blog in arg['blogs']:
-        blog.content = blog.content[:200]
+        blog.content = blog.content[:150]
     return render_template('index.html', **arg)
 
 
@@ -103,7 +104,7 @@ def blogs_api(user_id):
     offset = int(offset)
     limit = int(limit)
     u = current_user()
-    arg ={}
+    arg = {}
     if u is None:
         id_of_mine = 1
         # 当前没用户登录，默认加载自己的(id=1)blog
@@ -119,9 +120,11 @@ def blogs_api(user_id):
     # 本次拿出的博客，转化为字典
     blogs_to_show = blogs[offset:offset + limit]
     arg['blogs'] = [blog.json() for blog in blogs_to_show]
+    log(arg['blogs'])
     arg['user'] = user.json()
-    arg['user']['blogs'] = [b.json() for b in arg['user']['blogs']]
-    blog_num = len(arg['user']['blogs'])
+    # arg['user']['blogs'] = [b.json() for b in arg['user']['blogs']]
+    blog_num = len(arg['blogs'])
+    log(blog_num)
     arg['blog_num'] = blog_num
     # 缩略页显示二百个字符
     for blog in arg['blogs']:
@@ -182,6 +185,7 @@ def profile_view():
 @app.route('/blog/details/<blog_id>', methods=['GET'])
 def blog_detail_view(blog_id):
     blog = Blog.query.filter_by(id=blog_id).first()
+    log(blog.json())
     if blog is not None:
         comments = Comment.query.filter_by(blog_id=blog_id).all()
         user = current_user()
@@ -193,7 +197,7 @@ def blog_detail_view(blog_id):
             user=user
             # user=user
         )
-        log('发回前端的文章内容，查看一下格式问题:',blog.content)
+        log('发回前端的文章内容，查看一下格式问题:', blog.content)
     else:
         abort(404)
     return render_template('blog_detail.html', **arg)
