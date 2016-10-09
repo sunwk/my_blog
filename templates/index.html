@@ -329,6 +329,21 @@
         return Y + M + D + h + m + s;
     };
 
+    var md = function (str) {
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: false,
+            sanitize: true,
+            smartLists: true,
+            smartypants: false
+        });
+        var content = str;
+        return marked(content)
+    };
+
     var blogTemplate = function (data, i) {
         var user_id = data.user.id;
         var user_name = data.user.username;
@@ -336,7 +351,7 @@
         var blog_id = blog.id;
         var blog_title = blog.title;
         var blog_createdTime = dateTime(blog.created_time);
-        var blog_content = blog.content;
+        var blog_content = md(blog.content);
         var t = `
             <div class="blogitems">
             <h2>
