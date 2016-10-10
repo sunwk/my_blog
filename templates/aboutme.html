@@ -11,8 +11,8 @@
 {#    <link rel="stylesheet" type="text/css" href="/static/css/blogcss1.css">#}
     <link rel="stylesheet" type="text/css" href="/static/css/blogcss2.css">
 
-    <link rel="shortcut icon" href="/static/gagasalamer.ico">
-
+    <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+    <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
 
     <style type="text/css">
         h1 {
@@ -44,7 +44,7 @@
     $SCRIPT_ROOT = "";
 </script>
 <body style="background-color:#EEE">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="container">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -63,13 +63,11 @@
                         <a href="/about">About</a>
                     </li>
                     <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
+{#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                        <a id="id-a-writeblog" href="#">Write blog</a>
                     </li>
                 </ul>
-                <form action="/register" class="navbar-form navbar-right">
+                <form action="/register" class="navbar-form navbar-right" method="post">
                     <div class="form-group">
                       <input type="text" placeholder="Username" name="username" class="form-control">
                     </div>
@@ -77,12 +75,14 @@
                       <input type="password" placeholder="Password" name="password" class="form-control">
                     </div>
                     <button type="submit" class="btn btn-success">Sign in</button>
-                </form>
-            </div>
+                    <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
+                 </form>
+           </div>
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->
     </nav>
+    <div id="id-div-current_user" data-current_user="{{ user_id }}">
     <br>
     <br>
     <br>
@@ -95,7 +95,7 @@
                         <div class="col-md-3">
                             <br>
 
-                            <div align="center"><img src="http://7xlen8.com1.z0.glb.clouddn.com/avatar.jpg"
+                            <div align="center"><img src="{{ url_for('static', filename='img/03.jpg') }}"
                                                      style="height:220px;width:220px;border-radius:110px;display:block;text-align:center"
                                                      align="center"></div>
                             <br>
@@ -128,38 +128,38 @@
                             <ul>
                                 <li>Email:<a href="#">avalon@outlook.com</a></li>
                                 <li>Tel:13259818223</li>
-                                <li>QQ:3028156088</li>
+                                <li>QQ:546602667</li>
                             </ul>
                             <h3>个人代码库：</h3>
                             <hr>
                             <ul>
-                                <li>GITHUB:<a href="https://github.com/salamer">https://github.com/salamer</a></li>
-                                <li>该网站源代码:<a href="https://github.com/salamer/aljun.me">https://github.com/salamer/aljun.me</a>
+                                <li>GITHUB:<a href="https://github.com/sunwk">https://github.com/sunwk</a></li>
+                                <li>该网站源代码:<a href="https://github.com/sunwk">https://github.com/sunwk</a>
                                 </li>
                             </ul>
                             <h3>专业技能：</h3>
                             <hr>
                             <ul>
-                                <li>熟练掌握Python编程语言</li>
-                                <li>熟悉SQL语言</li>
-                                <li>熟悉HTTP、Socket原理</li>
-                                <li>熟练使用Flask Web框架进行独立开发</li>
-                                <li>熟练使用SQLAlchemy进行数据库开发，熟练掌握MySQL、SQLite等数据库的使用</li>
-                                <li>掌握HTML、JavaScript、jQuery、JSON、Jinja2等前端技术</li>
-                                <li>能够基于Bootstrap及Ajax实现前端组件及优化数据交互体验</li>
-                                <li>了解MVC架构模式，了解RESTful API 设计标准</li>
+                                <li>熟练掌握 Python 编程语言</li>
+                                <li>熟悉 SQL 语言</li>
+                                <li>熟悉 HTTP、Socket 原理</li>
+                                <li>熟练使用 Flask Web 框架进行独立开发</li>
+                                <li>熟练使用 SQLAlchemy 进行数据库开发，熟练掌握 MySQL、MongoDB、SQLite 等数据库的使用</li>
+                                <li>掌握 HTML、JavaScript、jQuery、JSON、Jinja2 等前端技术</li>
+                                <li>能够基于 Bootstrap 及 Ajax 实现前端组件及优化数据交互体验</li>
+                                <li>了解 MVC 架构模式，了解 RESTful API 设计标准</li>
                                 <li>能熟练使用抓包软件分析、定位、解决日常问题</li>
-                                <li>日常使用Pycharm/Sublime Text等工具进行开发，熟悉Linux环境,使用Git工具进行版本管理，乐于尝试新的工具</li>
+                                <li>日常使用 Pycharm/Atom 等工具进行开发，熟悉Linux环境,使用Git工具进行版本管理，乐于尝试新的工具</li>
                             </ul>
                             <h3>我的项目: </h3>
                             <hr>
                             <ul>
-                                <li>爬虫项目:<a href="http://aljun.me">http//:aljun.me</a><br><br>
-                                    使用socket分别实现Web Spider及Web Server</li>
+                                <li>爬虫项目:<a href="#">#</a><br><br>
+                                    使用 Socket 从底层分别实现 Web Spider及Web Server</li>
                                 <hr>
-                                <li>微博项目:<a href="http://zhaduixueshe.com">http://zhaduixueshe.com</a><br><br>使用Flask + MySQL开发简易微博，并使用Bootstrap及AJAX完成页面数据交互的优化。具有注册、登录、记录主页来访、查看他人主页、管理员特别权限、发微博、编辑微博、评论/回复评论、关注/取消关注等功</li>
+                                <li>微博项目:<a href="#">#</a><br><br>使用Flask + MySQL开发简易微博，并使用Bootstrap及AJAX完成页面数据交互的优化。具有注册、登录、记录主页来访、查看他人主页、管理员特别权限、发微博、编辑微博、评论/回复评论、关注/取消关注等功</li>
                                 <hr>
-                                <li>电商项目:<a href="http://aljun.me">http//:aljun.me</a><br><br>使用Flask + MySQL+ Ajax模仿Knewone主页，实现网站基本功能</li>
+                                <li>电商项目:<a href="#">#</a><br><br>使用Flask + MySQL+ Ajax模仿Knewone主页，实现网站基本功能</li>
                             </ul>
                             <h3>自我描述：</h3>
                             <hr>
@@ -173,13 +173,13 @@
                             <h3>工作经历：</h3>
                             <hr>
                             <ul>
-                                <li>2015.07 --- 2016.07   中建三局      助理工程师/初级经济师</li>
+                                <li>2015.07 --- 2016.07&nbsp&nbsp&nbsp中建三局&nbsp&nbsp&nbsp助理工程师/初级经济师</li>
                             </ul>
 
                             <h3>教育经历</h3>
                             <hr>
                             <ul>
-                                <li>2011.09 --- 2015.07   西安建筑科技大学</li>
+                                <li>2011.09 --- 2015.07  &nbsp&nbsp西安建筑科技大学</li>
                             </ul>
 
                             <h3>格言：</h3>
@@ -194,9 +194,8 @@
                                 <p class="text-right"><em>——Miyazono Kaori</em> &nbsp &nbsp &nbsp</p>
                             </blockquote>
                             <hr>
-                            <p>我想感谢 <strong>BIG SEAN,KANYE WEST</strong><strong>和 JUSTIN
-                                BIEBER,ONEREPUBLIC,COLDPLAY </strong>，感谢他们的歌曲陪伴了我走过一个个敲键盘的夜晚。</p>
-                            <img src="http://7xlen8.com1.z0.glb.clouddn.com/kanye3.jpg" alt="pic"
+                            <p>我想感谢 <strong>F.F.Chopin,Franz Liszt</strong>，大师的音乐陪伴了我走过一个个敲键盘的夜晚。</p>
+                            <img src="../static/img/01.jpg" alt="pic"
                                  class="img-responsive">
                             <hr>
                             <p class="lead">这是我的个人网站，如果你觉得它很有趣，或者内容对你很有帮助，可以qq联系我，请我喝杯茶。</p>
@@ -268,78 +267,53 @@
         </div>
     </div>
 </div>
-
-
-<div class="signin" style="height:900px;width:400px;position:fixed;top:25%;left:40%;display:none" id="vzinv_signin">
-    <div class="panel panel-success">
-        <div class="panel-heading">SIGN IN
-            <div style="right:18px;top:18px;position:absolute" id="signup_close"><span
-                    class="glyphicon glyphicon-remove" aria-hidden="true" id="signin_close"
-                    style="cursor:pointer"></span></div>
-        </div>
-        <div class="panel-body">
-            <div class="login-form">
-                <div class="control-group">
-                    <input type="text" class="form-control" value="" placeholder="Enter your name" id="login-name"/>
-                    <label class="login-field-icon fui-man-16" for="login-name"></label>
-                </div>
-
-                <div class="control-group">
-                    <input type="password" class="form-control" value="" placeholder="Password" id="login-pass"/>
-                    <label class="login-field-icon fui-lock-16" for="login-pass"></label>
-                </div>
-                <label class="checkbox">
-                    <span class="icon"></span>
-                    <span class="icon-to-fade"></span>
-                    <input type="checkbox">keep alive.
-                </label>
-
-                <a class="btn btn-primary btn-large btn-block" href="#">Login</a>
-
-            </div>
-        </div>
-    </div>
-</div>
-
-
-<div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
+        <div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
     <div class="container">
         <div class="row" style="padding-top:30px;">
             <div class="col-md-7">
-                <p class="lead"> Designed and built with all the love in the world by the Mr.<a href="/">ALJUN</a>.</p>
-                <p>@SERVER BY <strong>NGINX</strong> AND POWER BY <strong>DIGITALOCEAN</strong>.</p>
-
+                <p class="lead"> Designed and built with all the love in the world by the <a href="/1">Mr.Avalon</a>.</p>
+                <p>@SERVER BY <strong>NGINX</strong> AND POWER BY <strong>BANDWAGON</strong>.</p>
             </div>
             <div class="col-md-5">
                 <div>
                     <h5 style="margin-bottom:15px;margin-left:18px;"><strong>CONTACT ME</strong></h5>
                     <ul>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp
-                            WECHAT</a></li>
-                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"
-                                                                                aria-hidden="true"></span> &nbsp WEIBO
-                        </li>
-                        <li><a href="https://github.com/salamer"><span class="glyphicon glyphicon-grain"
+                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp
+                            QQ</a></li>
+{#                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"#}
+{#                                                                                aria-hidden="true"></span> &nbsp WEIBO#}
+{#                        </li>#}
+                        <li><a href="https://github.com/sunwk"><span class="glyphicon glyphicon-grain"
                                                                        aria-hidden="true"></span>&nbsp GITHUB</a></li>
                         <li><a href="#"><span class=" glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp
-                            EMAIL:<strong>contactsalamer@163.com</strong></a></li>
+                            EMAIL:<strong>sunwk@outlook.com</strong></a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-12">
                 <p>
-                    <small>© COPYRIGHT BY GAGASALAMER 2015</small>
+                    <small>© COPYRIGHT BY Avalon</small>
                 </p>
             </div>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        var button = $('#id-a-writeblog');
+        button.on('click', function () {
+            console.log('点击了写博客按钮');
+            var currentUserId = $('#id-div-current_user').data('current_user');
+            if (currentUserId=='False'){
+                window.location.href = '/editor/' + currentUserId
+            }else {
+                alert('请先注册登录')
+            }
+        })
 
-<script type="text/javascript" src="/static/dist/js/vendor/jquery.min.js"></script>
-
-<script type="text/javascript" src="/static/mystyle.js"></script>
-
-<script type="text/javascript" src="/static/bootstrap/js/bootstrap.min.js"></script>
+    })
+</script>
+<script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
 
 
 </body>

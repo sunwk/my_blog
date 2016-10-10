@@ -18,132 +18,114 @@
     <!-- Custom CSS -->
     <link href="../static/css/blog-home.css" rel="stylesheet">
 
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="../static/js/jquery.js"></script>
 
 
 </head>
 
 <body style="background-color:#EEE">
+<!-- Navigation -->
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse"
+                    data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/">Home</a>
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li>
+                    <a href="/about">About</a>
+                </li>
+                <li>
+                    {#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                    <a class="logwarning" id="id-a-writeblog" href="#">Write blog</a>
+                </li>
+            </ul>
+            <form action="/register" class="navbar-form navbar-right" method="post">
+                <div class="form-group">
+                    <input type="text" placeholder="Username" name="username" class="form-control">
+                </div>
+                <div class="form-group">
+                    <input type="password" placeholder="Password" name="password" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-success">Sign in</button>
+                <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
+            </form>
+        </div>
+        <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+</nav>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-        <div class="container">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="/">Home</a>
-            </div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                    <li>
-                        <a href="/about">About</a>
+<div id="id-div-current_user" data-current_user_id="{{ current_user_id }}"></div>
+
+
+<!-- Page Content -->
+<div class="container">
+    <article class="article the-font">
+
+        <div class="row">
+
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
+
+                <h1 id="id-h1-top" class="page-header">
+                    我的博客
+                    <small>概览</small>
+                </h1>
+
+                <!-- First Blog Post -->
+                <div id="id-div-blogitems">
+                    {% for blog in blogs %}
+                        <div class="blogitems">
+                        <h2>
+                            <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a>
+                        </h2>
+                        <p class="lead">
+                            by <a class="class-a-user_id" href="/{{ user.id }}">{{ user.username }}</a>
+                        </p>
+                        <p><span class="glyphicon glyphicon-time"></span> Posted on
+                            <time>{{ blog.created_time }}</time>
+                        </p>
+                        <hr>
+                        {#                            <img class="img-responsive" src="http://placehold.it/900x300" alt="">#}
+                        <img class="img-responsive" src="{{ url_for('static', filename='img/02.jpg') }}">
+                        <hr>
+                        <p class="class-p-blogcontent">{{ blog.content }}</p>
+                        <a class="btn btn-primary" href="/blog/details/{{ blog.id }}">Read More <span
+                                class="glyphicon glyphicon-chevron-right"></span></a>
+
+                        <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a id="id-a-newer" href="#">&larr; Newer</a>
                     </li>
-                    <li>
-                        <a href="#">Services</a>
-                    </li>
-                    <li>
-                        <a href="#">Contact</a>
+                    <li class="next">
+                        <a id="id-a-older" href="#">Older &rarr;</a>
                     </li>
                 </ul>
-                <form action="/register" class="navbar-form navbar-right">
-                    <div class="form-group">
-                      <input type="text" placeholder="Username" name="username" class="form-control">
-                    </div>
-                    <div class="form-group">
-                      <input type="password" placeholder="Password" name="password" class="form-control">
-                    </div>
-                    <button type="submit" class="btn btn-success">Sign in</button>
-                 </form>
-           </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
 
-    <!-- Page Content -->
-        <div class="container">
-            <article class="article the-font">
-
-            <div class="row">
-
-                <!-- Blog Entries Column -->
-                <div class="col-md-8">
-
-                    <h1 class="page-header">
-                        我的博客
-                        <small>概览</small>
-                    </h1>
-
-                    <!-- First Blog Post -->
-                    <h2>
-                        <a href="/blog/details">Blog Post Title</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:00 PM</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p>{{ blog }}</p>
-                    <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                    <hr>
-
-                    <!-- Second Blog Post -->
-                    <h2>
-                        <a href="#">Blog Post Title</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quibusdam, quasi, fugiat, asperiores harum voluptatum tenetur a possimus nesciunt quod accusamus saepe tempora ipsam distinctio minima dolorum perferendis labore impedit voluptates!</p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                    <hr>
-
-                    <!-- Third Blog Post -->
-                    <h2>
-                        <a href="#">Blog Post Title</a>
-                    </h2>
-                    <p class="lead">
-                        by <a href="index.php">Start Bootstrap</a>
-                    </p>
-                    <p><span class="glyphicon glyphicon-time"></span> Posted on August 28, 2013 at 10:45 PM</p>
-                    <hr>
-                    <img class="img-responsive" src="http://placehold.it/900x300" alt="">
-                    <hr>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, voluptates, voluptas dolore ipsam cumque quam veniam accusantium laudantium adipisci architecto itaque dicta aperiam maiores provident id incidunt autem. Magni, ratione.</p>
-                    <a class="btn btn-primary" href="#">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
-
-                    <hr>
-
-                    <!-- Pager -->
-                    <ul class="pager">
-                        <li class="previous">
-                            <a href="#">&larr; Older</a>
-                        </li>
-                        <li class="next">
-                            <a href="#">Newer &rarr;</a>
-                        </li>
-                    </ul>
-
-                </div>
+            </div>
 
             <!-- Blog Sidebar Widgets Column -->
             <div class="col-md-4">
@@ -164,42 +146,41 @@
 
                 <!-- Blog Categories Well -->
                 <div class="well">
-                    <h4>Blog Categories</h4>
+                    <h4>Other People's Blog</h4>
                     <div class="row">
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
+                                {% for blog in other_blogs %}
+                                    <li>
+                                        <a href="/blog/details/{{ blog.id }}">{{ blog.title }}</a> --- by <a href="/{{ blog.user.id }}">{{ blog.user.username }}</a>
+                                    </li>
+                                {% endfor %}
                             </ul>
                         </div>
-                        <!-- /.col-lg-6 -->
-                        <div class="col-lg-6">
-                            <ul class="list-unstyled">
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                                <li><a href="#">Category Name</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <!-- /.col-lg-6 -->
                     </div>
                     <!-- /.row -->
                 </div>
 
                 <!-- Side Widget Well -->
                 <div class="well">
-                    <h4>Side Widget Well</h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Inventore, perspiciatis adipisci accusamus laudantium odit aliquam repellat tempore quos aspernatur vero.</p>
+                    <h4>My Todo List</h4>
+                    <ul>
+                        <div id="id-div-todo">
+                        {% for t in todos %}
+                        <li class="todoItems">
+                            <p>{{ t.todo }}</p>
+                        </li>
+                        {% endfor %}
+                        </div>
+                    </ul>
+                    <div class="input-group">
+                        <input id="id-input-todo" type="text" class="form-control">
+                        <span class="input-group-btn">
+                            <button id="id-button-todo" class="logwarning btn btn-default" type="button">
+                                <span class="glyphicon glyphicon-pencil"></span>
+                        </button>
+                        </span>
+                    </div>
                 </div>
 
             </div>
@@ -213,54 +194,310 @@
         <footer>
             <div class="row">
                 <div class="col-lg-12">
-                    <p>Copyright &copy; Your Website 2014</p>
+                    <p>Copyright &copy; Avalon 2016</p>
                 </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
         </footer>
     </article>
-    </div>
+</div>
 
-    <div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
+<div style="background:#384452 none repeat scroll 0% 0%;color:#BFC9D3">
     <div class="container">
         <div class="row" style="padding-top:30px;">
             <div class="col-md-7">
-                <p class="lead"> Designed and built with all the love in the world by the Mr.<a href="/">ALJUN</a>.</p>
-                <p>@SERVER BY <strong>NGINX</strong> AND POWER BY <strong>DIGITALOCEAN</strong>.</p>
-
+                <p class="lead"> Designed and built with all the love in the world by the <a href="/1">Mr.Avalon</a>.</p>
+                <p>@SERVER BY <strong>NGINX</strong> AND POWER BY <strong>BANDWAGON</strong>.</p>
             </div>
             <div class="col-md-5">
                 <div>
                     <h5 style="margin-bottom:15px;margin-left:18px;"><strong>CONTACT ME</strong></h5>
                     <ul>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> &nbsp
-                            WECHAT</a></li>
-                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"
-                                                                                aria-hidden="true"></span> &nbsp WEIBO
-                        </li>
-                        <li><a href="https://github.com/salamer"><span class="glyphicon glyphicon-grain"
+                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp
+                            QQ</a></li>
+{#                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"#}
+{#                                                                                aria-hidden="true"></span> &nbsp WEIBO#}
+{#                        </li>#}
+                        <li><a href="https://github.com/sunwk"><span class="glyphicon glyphicon-grain"
                                                                        aria-hidden="true"></span>&nbsp GITHUB</a></li>
                         <li><a href="#"><span class=" glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp
-                            EMAIL:<strong>contactsalamer@163.com</strong></a></li>
+                            EMAIL:<strong>sunwk@outlook.com</strong></a></li>
                     </ul>
                 </div>
             </div>
             <div class="col-md-12">
                 <p>
-                    <small>© COPYRIGHT BY GAGASALAMER 2015</small>
+                    <small>© COPYRIGHT BY Avalon</small>
                 </p>
             </div>
         </div>
     </div>
 </div>
-    <!-- /.container -->
+<script>
 
-    <!-- jQuery -->
-    <script src="../static/js/jquery.js"></script>
+    var logOut = function () {
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    //console.log('服务器返回了:', r);
+                    if (r.success) {
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
+    };
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="../static/js/bootstrap.min.js"></script>
+    var logWarning = function () {
+        var buttons = $('.logwarning');
+        buttons.on('click', function () {
+            //console.log('点击了写博客按钮');
+            var currentUserId = $('#id-div-current_user').data('current_user_id');
+            if (typeof (currentUserId) == 'number') {
+                window.location.href = '/editor/' + currentUserId
+            } else {
+                alert('请先注册登录')
+            }
+        })
+    };
+
+
+    var mdTsf = function () {
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: false,
+            sanitize: true,
+            smartLists: true,
+            smartypants: false
+        });
+
+        var contents = $('.class-p-blogcontent');
+        //console.log('选中的所有p', contents);
+        for (var i = 0; i < contents.length; i++) {
+            //console.log('选中的当前content', contents[i]);
+            var content = $(contents[i]).text();
+            //console.log('选中的当前content的内容：', content);
+            $(contents[i]).html(marked(content))
+        }
+    };
+
+    var timeTsf = function () {
+        var unixTime = $('time');
+        for (var i = 0; i < unixTime.length; i++) {
+            var t = $(unixTime[i]).text();
+            var date = new Date(Number(t)*1000);
+            var Y = date.getFullYear() + '-';
+            var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+            var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + ' ';
+            var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+            var m = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ':';
+            var s = date.getSeconds();
+            $(unixTime[i]).text(Y + M + D + h + m + s);
+        }
+    };
+
+
+    var deleteItems = function () {
+        var currentItems = $('#id-div-blogitems');
+        currentItems.empty()
+    };
+
+    var insertItems = function (data, i) {
+        var t = blogTemplate(data, i);
+        $('#id-div-blogitems').append(t)
+
+    };
+
+    var dateTime = function (time) {
+        var t = time;
+        var date = new Date(Number(t)*1000);
+        var Y = date.getFullYear() + '-';
+        var M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1) + '-';
+        var D = (date.getDate() < 10 ? "0" + date.getDate() : date.getDate()) + ' ';
+        var h = (date.getHours() < 10 ? "0" + date.getHours() : date.getHours()) + ':';
+        var m = (date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes()) + ':';
+        var s = date.getSeconds();
+        return Y + M + D + h + m + s;
+    };
+
+    var md = function (str) {
+        marked.setOptions({
+            renderer: new marked.Renderer(),
+            gfm: true,
+            tables: true,
+            breaks: true,
+            pedantic: false,
+            sanitize: true,
+            smartLists: true,
+            smartypants: false
+        });
+        var content = str;
+        return marked(content)
+    };
+
+    var blogTemplate = function (data, i) {
+        var user_id = data.user.id;
+        var user_name = data.user.username;
+        var blog = data.blogs[i];
+        var blog_id = blog.id;
+        var blog_title = blog.title;
+        var blog_createdTime = dateTime(blog.created_time);
+        var blog_content = md(blog.content);
+        var t = `
+            <div class="blogitems">
+            <h2>
+                <a href="/blog/details/${blog_id}">${blog_title}</a>
+            </h2>
+            <p class="lead">
+                by <a class="class-a-user_id" href="/${user_id}">${user_name}</a>
+            </p>
+            <p><span class="glyphicon glyphicon-time"></span> Posted on <time>${blog_createdTime}</time></p>
+            <hr>
+            <img class="img-responsive" src="../static/img/02.jpg">
+            <hr>
+            <p class="class-p-blogcontent">${blog_content}</p>
+            <a class="btn btn-primary" href="/blog/details">Read More <span class="glyphicon glyphicon-chevron-right"></span></a>
+
+            <hr>
+            </div>
+            `;
+        return t
+    };
+
+    var clickOlder = function () {
+        var temp = $('.class-a-user_id')[0];
+        var url = $(temp).attr('href');
+        var request = {
+            url: '/api' + url + '?offset=' + offset + '&limit=' + limit,
+            type: 'get',
+            success: function (data) {
+                //console.log('换页收到的数据:', data);
+                if (data.blog_num > offset - 3) {
+                    offset += limit;
+                    deleteItems();
+                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                    for (var i = 0; i < data.blogs.length; i++) {
+                        insertItems(data, i)
+                    }
+                }
+            }
+        };
+        $.ajax(request);
+    };
+
+    var clickNewer = function () {
+        var temp = $('.class-a-user_id')[0];
+        var url = $(temp).attr('href');
+        var c_offset = offset - limit*2;
+        var request = {
+            url: '/api' + url + '?offset=' + c_offset + '&limit=' + limit,
+            type: 'get',
+            success: function (data) {
+                if (offset > 3) {
+                    offset -= limit;
+                    //console.log('换页收到的数据:', data);
+                    deleteItems();
+                    // data的格式为：{'user': {'password': '001', 'note': '', 'created_time': None, 'role': 2, 'username': 'luxuanxuan', 'id': 1, 'sex': ''}, 'current_user_id': 1, 'blogs': [{'content': '### Hello Editor.md !\n2222222222222222222', 'id': 2, 'user_id': 1, 'created_time': '1474031806.26777', 'title': '2222222222222'}, {'content': '### Hello Editor.md !\n11111111111111111111111111', 'id': 1, 'user_id': 1, 'created_time': '1474031788.38075', 'title': '111111111'}]}
+                    for (var i = 0; i < data.blogs.length; i++) {
+                        insertItems(data, i)
+                    }
+                }
+            }
+        };
+        $.ajax(request);
+    };
+
+    var offset = 3;
+    var limit = 3;
+
+    var switchPage = function () {
+        var olderButton = $('#id-a-older');
+        var newerButton = $('#id-a-newer');
+        olderButton.on('click', clickOlder);
+        newerButton.on('click', clickNewer);
+    };
+
+
+    var todoTemplate = function (r) {
+        var todo = r.todo;
+        var t = `
+        <li class="todoItems">
+            <p>${todo}</p>
+        </li>
+        `;
+        return t;
+    };
+
+    var insertTodo = function (r) {
+        var template = todoTemplate(r);
+        var div = $('#id-div-todo');
+        var todoItems = $('.todoItems');
+        if (todoItems.length <= 10){
+            todoItems[9].remove();
+            div.prepend(template)
+        }else {
+            div.prepend(template)
+        }
+    };
+
+
+    var postData = function () {
+        var todo = $('#id-input-todo').val();
+        var data = {
+            todo: todo
+        };
+        var parsed_data = JSON.stringify(data);
+
+        var request = {
+            url: '/api/todo/add',
+            contentType: 'application/json',
+            type: 'post',
+            data: parsed_data,
+            success: function (r) {
+                console.log('服务器返回了:', r);
+                if(r.success){
+                    insertTodo(r)
+                }
+            }
+        };
+        $.ajax(request)
+    };
+
+
+    var addTodo = function () {
+        var button = $('#id-button-todo');
+        button.on('click', postData);
+    };
+
+    var __main = function () {
+        logOut();
+        logWarning();
+        mdTsf();
+        timeTsf();
+        switchPage();
+        addTodo();
+    };
+
+    $(document).ready(function () {
+        __main();
+    })
+</script>
+
+<script src="../static/js/marked.js"></script>
+<!-- jQuery -->
+<script src="../static/js/jquery.js"></script>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/js/bootstrap.min.js"></script>
 
 </body>
 

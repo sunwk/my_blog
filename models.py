@@ -46,6 +46,13 @@ class User(db.Model):
         class_name = self.__class__.__name__
         return u'<{}: {}>'.format(class_name, self.id)
 
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
+        return d
+
     # def __str__(self):
     #     class_name = self.__class__.__name__
     #     return u'<ID:{} Username:{} Sex:{} Role:{}>'\
@@ -93,6 +100,13 @@ class Blog(db.Model):
         class_name = self.__class__.__name__
         return u'<{}: {}>'.format(class_name, self.id)
 
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k not in ('_sa_instance_state', 'user')}
+        return d
+
     def save(self):
         db.session.add(self)
         db.session.commit()
@@ -110,11 +124,43 @@ class Comment(db.Model):
     created_time = db.Column(db.String())
 
     blog_id = db.Column(db.Integer, db.ForeignKey('blogs.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, form):
         self.title = form.get('title', '')
         self.content = form.get('content', '')
+        self.blog_id = form.get('blog_id', '')
         self.created_time = ''
+
+    def __repr__(self):
+        class_name = self.__class__.__name__
+        return u'<{}: {}>'.format(class_name, self.id)
+
+    def json(self):
+        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
+        # 引用一下 id 这样数据就从数据库中载入了
+        self.id
+        d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
+        return d
+
+    def save(self):
+        db.session.add(self)
+        db.session.commit()
+
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+
+class Todo(db.Model):
+    __tablename__ = 'todos'
+    id = db.Column(db.Integer, primary_key=True)
+    todo = db.Column(db.String())
+
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+
+    def __init__(self, form):
+        self.todo = form.get('todo', '')
 
     def __repr__(self):
         class_name = self.__class__.__name__

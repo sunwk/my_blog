@@ -51,52 +51,42 @@
 </head>
 
 <body style="background-color:#EEE">
+ <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Home</a>
+            </div>
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="/about">About</a>
+                    </li>
+                    <li>
+{#                        <a href="/editor/{{ user.id }}">Write blog</a>#}
+                        <a href="#">Write blog</a>
+                    </li>
+                </ul>
+                <form action="/register" class="navbar-form navbar-right" method="post">
+                    <div class="form-group">
+                      <input type="text" placeholder="Username" name="username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                      <input type="password" placeholder="Password" name="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-success">Sign in</button>
+                    <button id="id-button-logout" type="button" class="btn btn-danger">Log out</button>
+                 </form>
+           </div>
+        </div>
+    </nav>
 
-<!-- Navigation -->
-<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse"
-                    data-target="#bs-example-navbar-collapse-1">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="/">Home</a>
-        </div>
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li>
-                    <a href="/about">About</a>
-                </li>
-                <li>
-                    <a href="#">Services</a>
-                </li>
-                <li>
-                    <a href="#">Contact</a>
-                </li>
-            </ul>
-            <form action="/register" class="navbar-form navbar-right">
-                <div class="form-group">
-                    <input type="text" placeholder="Username" name="username" class="form-control">
-                </div>
-                <div class="form-group">
-                    <input type="password" placeholder="Password" name="password" class="form-control">
-                </div>
-                <button type="submit" class="btn btn-success">Sign in</button>
-            </form>
-        </div>
-        <!-- /.navbar-collapse -->
-    </div>
-    <!-- /.container -->
-</nav>
-{#<div data-id='{{ user_id }}' style="cursor:pointer" class="btn btn-primary btn-large btn-block btn-like-add col-sm-10">#}
-{#    提交文章#}
-{#    <span id="id-span-commit" aria-hidden="True"></span>#}
-{#</div>#}
+
 
   <!-- sample modal content -->
   <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -124,32 +114,46 @@
       Click to add a title and submit blog
     </button>
   </div>
-{#<div data-id='{{ user_id }}'>#}
-{#    <button id="id-button-commit" class="btn btn-primary btn-block">提交文章</button>#}
-{#</div>#}
+
+
 <div id="editormd">
-        <textarea style="display:none;">### Hello Editor.md !</textarea>
+        <textarea style="display:none;">### Hello World !</textarea>
 </div>
 <script>
-    $(document).ready(function () {
-        console.log('ready');
-        commitBlog()
-    });
+    var LogOut = function () {
+        var button = $('#id-button-logout');
+        var url = '/logout';
+        button.on('click', function () {
+            var request = {
+                url: url,
+                type: 'get',
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success){
+                        window.location.href = r.url
+                    }
+                }
+            };
+            $.ajax(request);
+        })
+    };
 
-    var commitBlog = function () {
+
+    var submitMdFile = function () {
         var button = $('#id-button-commit');
         button.on('click', function () {
-            var content = $('.CodeMirror').text();
-            console.log('要提交的内容:', content);
+            //var content = $('.CodeMirror').text();
+            var content = $('.editormd-markdown-textarea').text();
             var title = $('#id-input-title').val();
-            console.log('要提交的标题:', title);
             var user_id = $('#id-div-dataset').data('id');
             var blog = {
-                user_id: user_id,
-                title: title,
-                content: content
-            };
-            var parsed_blog = JSON.stringify(blog);
+            user_id: user_id,
+            title: title,
+            content: content
+        };
+        var parsed_blog = JSON.stringify(blog);
+            alert(content);
+            alert(title);
             var request = {
                 url: "/blog/add",
                 contentType: 'application/json',
@@ -157,12 +161,24 @@
                 data: parsed_blog,
                 success: function (r) {
                     console.log('服务器返回了:', r);
+                    if(r.success){
+                        window.location.pathname = '/blog/details/' + r.id
+                    }
                 }
             };
             $.ajax(request)
         })
-    }
+    };
 
+
+    var main = function () {
+        LogOut();
+        submitMdFile();
+    };
+
+    $(document).ready(function () {
+        main()
+    })
 </script>
 <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
