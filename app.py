@@ -24,10 +24,10 @@ app.secret_key = 'lxx'
 def log(*args):
     t = time.time()
     tt = time.strftime(r'%Y/%m/%d %H:%M:%S', time.localtime(t))
-    print(tt, *args)
-    with open('log.txt', 'a') as f:
-        f.write('{} : {}\n'.format(tt, *args))
-        f.close()
+    # print(tt, *args)
+    # with open('log.txt', 'a') as f:
+    #     f.write('{} : {}\n'.format(tt, *args))
+    #     f.close()
 
 
 def current_user():
