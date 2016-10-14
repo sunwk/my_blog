@@ -258,6 +258,7 @@ def todo_add():
     todo = Todo(data)
     if u is not None:
         todo.user_id = u.id
+    todo.created_time = time.time()
     todo.save()
     r = dict(
         success=True,

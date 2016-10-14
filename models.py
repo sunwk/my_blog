@@ -6,24 +6,19 @@ import time
 import shutil
 
 
-# 数据库的路径
 db_path = 'db.sqlite'
-# 获取 app 的实例
+
 app = Flask(__name__)
-# 这个先不管，其实是 flask 用来加密 session 的东西
+
 app.secret_key = 'random string'
-# 配置数据库的打开方式
+
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     'sqlite:///{}'.format(db_path)
 
 db = SQLAlchemy(app)
 
 
-# 数据库里面的一张表，是一个类
-# 它继承自 db.Model
 class User(db.Model):
-    # 类的属性就是数据库表的字段
-    # 这些都是内置的 __tablename__ 是表名
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(), unique=True)
@@ -47,8 +42,6 @@ class User(db.Model):
         return u'<{}: {}>'.format(class_name, self.id)
 
     def json(self):
-        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
-        # 引用一下 id 这样数据就从数据库中载入了
         self.id
         d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
         return d
@@ -59,7 +52,6 @@ class User(db.Model):
     #         .format(self.id, self.username, self.sex, self.role)
 
     def save(self):
-        # 这是数据库的概念，用法就是这样，先 add 再 commit
         db.session.add(self)
         db.session.commit()
 
@@ -67,7 +59,6 @@ class User(db.Model):
         db.session.delete(self)
         db.session.commit()
 
-    # 验证注册用户的合法性的
     def valid(self):
         username_len = len(self.username) >= 3
         password_len = len(self.password) >= 3
@@ -101,8 +92,6 @@ class Blog(db.Model):
         return u'<{}: {}>'.format(class_name, self.id)
 
     def json(self):
-        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
-        # 引用一下 id 这样数据就从数据库中载入了
         self.id
         d = {k: v for k, v in self.__dict__.items() if k not in ('_sa_instance_state', 'user')}
         return d
@@ -137,8 +126,6 @@ class Comment(db.Model):
         return u'<{}: {}>'.format(class_name, self.id)
 
     def json(self):
-        # Model 是延迟载入的, 如果没有引用过数据, 就不会从数据库中加载
-        # 引用一下 id 这样数据就从数据库中载入了
         self.id
         d = {k: v for k, v in self.__dict__.items() if k is not '_sa_instance_state'}
         return d
@@ -156,11 +143,12 @@ class Todo(db.Model):
     __tablename__ = 'todos'
     id = db.Column(db.Integer, primary_key=True)
     todo = db.Column(db.String())
-
+    created_time = db.Column(db.String())
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
     def __init__(self, form):
         self.todo = form.get('todo', '')
+        self.created_time = ''
 
     def __repr__(self):
         class_name = self.__class__.__name__
@@ -180,11 +168,6 @@ def backup_db():
     shutil.copyfile(db_path, backup_path)
 
 
-# 定义了数据库，如何创建数据库呢？
-# 调用 db.create_all()
-# 如果数据库文件已经存在了，则啥也不做
-# 所以说我们先 drop_all 删除所有表
-# 再重新 create_all 创建所有表
 def rebuild_db():
     backup_db()
     db.drop_all()
@@ -192,7 +175,6 @@ def rebuild_db():
     print('rebuild database')
 
 
-# 第一次运行工程的时候没有数据库
-# 所以我们运行 models.py 创建一个新的数据库文件
 if __name__ == '__main__':
-    rebuild_db()
+    # rebuild_db()
+    pass
