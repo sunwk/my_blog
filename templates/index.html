@@ -254,9 +254,9 @@
         })
     };
 
-    var logWarning = function () {
-        var buttons = $('.logwarning');
-        buttons.on('click', function () {
+    var editorLogWarning = function () {
+        var button = $('#id-a-writeblog');
+        button.on('click', function () {
             //console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user_id');
             if (typeof (currentUserId) == 'number') {
@@ -292,6 +292,7 @@
 
     var timeTsf = function () {
         var unixTime = $('time');
+        console.log(unixTime)
         for (var i = 0; i < unixTime.length; i++) {
             var t = $(unixTime[i]).text();
             var date = new Date(Number(t)*1000);
@@ -442,45 +443,49 @@
         var div = $('#id-div-todo');
         var todoItems = $('.todoItems');
         if (todoItems.length <= 10){
-            todoItems[9].remove();
             div.prepend(template)
         }else {
+            todoItems[9].remove();
             div.prepend(template)
         }
     };
 
+    var postTodo = function () {
+        var currentUserId = $('#id-div-current_user').data('current_user_id');
+        if (typeof (currentUserId) == 'number') {
+            var todo = $('#id-input-todo').val();
+            var data = {
+                todo: todo
+            };
+            var parsed_data = JSON.stringify(data);
 
-    var postData = function () {
-        var todo = $('#id-input-todo').val();
-        var data = {
-            todo: todo
-        };
-        var parsed_data = JSON.stringify(data);
-
-        var request = {
-            url: '/api/todo/add',
-            contentType: 'application/json',
-            type: 'post',
-            data: parsed_data,
-            success: function (r) {
-                console.log('服务器返回了:', r);
-                if(r.success){
-                    insertTodo(r)
+            var request = {
+                url: '/api/todo/add',
+                contentType: 'application/json',
+                type: 'post',
+                data: parsed_data,
+                success: function (r) {
+                    console.log('服务器返回了:', r);
+                    if (r.success) {
+                        insertTodo(r)
+                    }
                 }
-            }
-        };
-        $.ajax(request)
+            };
+            $.ajax(request)
+        }else {
+            alert('请先注册登录');
+        }
     };
 
 
     var addTodo = function () {
         var button = $('#id-button-todo');
-        button.on('click', postData);
+        button.on('click', postTodo);
     };
 
     var __main = function () {
         logOut();
-        logWarning();
+        editorLogWarning();
         mdTsf();
         timeTsf();
         switchPage();
