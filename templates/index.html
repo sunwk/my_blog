@@ -136,7 +136,7 @@
                     <div class="input-group">
                         <input type="text" class="form-control">
                         <span class="input-group-btn">
-                            <button class="btn btn-default" type="button">
+                            <button id="id-button-search" class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
@@ -214,15 +214,15 @@
                 <div>
                     <h5 style="margin-bottom:15px;margin-left:18px;"><strong>CONTACT ME</strong></h5>
                     <ul>
-                        <li><a href="#"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp
+                        <li><a><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp
                             QQ</a></li>
 {#                        <li><a href="http://weibo.com/2277966967/profile"><span class="glyphicon glyphicon-piggy-bank"#}
 {#                                                                                aria-hidden="true"></span> &nbsp WEIBO#}
 {#                        </li>#}
                         <li><a href="https://github.com/sunwk"><span class="glyphicon glyphicon-grain"
                                                                        aria-hidden="true"></span>&nbsp GITHUB</a></li>
-                        <li><a href="#"><span class=" glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp
-                            EMAIL:<strong>chenbiguo725@outlook.com</strong></a></li>
+                        <li><a><span class=" glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp
+                            EMAIL:<strong>sunwk725@outlook.com</strong></a></li>
                     </ul>
                 </div>
             </div>
@@ -483,6 +483,13 @@
         button.on('click', postTodo);
     };
 
+    var tips = function () {
+        var button = $('#id-button-search');
+        button.on('click', function () {
+            alert('搜索功能还没做好~~')
+        });
+    };
+
     var __main = function () {
         logOut();
         editorLogWarning();
@@ -490,6 +497,7 @@
         timeTsf();
         switchPage();
         addTodo();
+        tips();
     };
 
     $(document).ready(function () {

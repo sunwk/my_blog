@@ -126,7 +126,7 @@
                             <h3>联系方式：</h3>
                             <hr>
                             <ul>
-                                <li>Email：chenbiguo725@outlook.com</li>
+                                <li>Email：sunwk725@outlook.com</li>
                                 <li>Tel：13259818223</li>
                                 <li>QQ：546602667</li>
                             </ul>
@@ -177,7 +177,7 @@
                                     GITHUB : <a href="https://github.com/sunwk/my_twitter">https://github.com/sunwk/my_twitter</a><br><br>
                                     使用 Flask + MySQL 开发，部署于Apache2.4.7<br>
                                     使用MVC设计模式，有良好的代码结构<br>
-                                    具有注册、登录、发微博、评论、关注、记录主页来访、取消关注、点赞、用户分组、个人信息管理，等功能</li>
+                                    具有注册、登录、发微博、评论、查看个人主页、记录主页来访、关注、取消关注、用户分组、个人信息管理，等功能</li>
                             </ul>
                             <h3>自我描述：</h3>
                             <hr>
@@ -252,7 +252,7 @@
                         <li><a href="https://github.com/sunwk"><span class="glyphicon glyphicon-grain"
                                                                        aria-hidden="true"></span>&nbsp GITHUB</a></li>
                         <li><a href="#"><span class=" glyphicon glyphicon-send" aria-hidden="true"></span>&nbsp
-                            EMAIL:<strong>chenbiguo725@outlook.com</strong></a></li>
+                            EMAIL:<strong>sunwk725@outlook.com</strong></a></li>
                     </ul>
                 </div>
             </div>
@@ -271,9 +271,9 @@
             console.log('点击了写博客按钮');
             var currentUserId = $('#id-div-current_user').data('current_user');
             if (currentUserId=='False'){
-                window.location.href = '/editor/' + currentUserId
-            }else {
                 alert('请先注册登录')
+            }else {
+                window.location.href = '/editor/' + currentUserId
             }
         })
 
