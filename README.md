@@ -3,7 +3,7 @@
 这是我的博客项目
 
 
-使用 Flask + MySQL 开发
+使用 Flask + SQLite 开发
 
 
 使用Bootstrap进行页面美化
